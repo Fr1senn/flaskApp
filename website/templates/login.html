@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Авторизация{% endblock %}
+{% block content %}
+    <div class="content">
+        <section class="sign">
+            <div class="container">
+                <div class="sign_inner">
+                    <h2>Авторизация</h2>
+                    <hr>
+                    <form class="sign_form" action="" method="post">
+                        <label for="email">Укажите email</label>
+                        <input type="email" name="email">
+
+                        <label for="email">Укажите пароль</label>
+                        <input type="password" name="password">
+
+                        <button type="submit">Войти</button>
+                    </form>
+                    <p>Ещё нет аккаунта? <a href="{{ url_for('main.registration') }}">Создайте!</a></p>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

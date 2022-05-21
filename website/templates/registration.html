@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Регистрация{% endblock %}
+{% block content %}
+    <div class="content">
+        <section class="sign">
+            <div class="container">
+                <div class="sign_inner">
+                    <h2>Регистрация</h2>
+                    <hr>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% for category, message in messages %}
+                            {% if category =='error' %}
+                                <h2>{{ message }}</h2>
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                    <form class="sign_form" method="post">
+                        <label for="first_name">Укажите имя</label>
+                        <input type="text" name="first_name">
+
+                        <label for="last_name">Укажите фамилию</label>
+                        <input type="text" name="last_name
+">
+                        <label for="email">Укажите email</label>
+                        <input type="email" name="email">
+
+                        <label for="birthday">Укажите дату рождения</label>
+                        <input type="date" name="birthday">
+
+                        <label for="password">Укажите пароль</label>
+                        <input type="password" name="password">
+
+                        <label for="password_confirm">Подтвердите пароль</label>
+                        <input type="password" name="password_confirm">
+
+                        <button type="submit">Зарегистрироваться</button>
+                    </form>
+                    <p>Уже есть аккаунт? <a href="{{ url_for('main.login') }}">Авторизируйтесь!</a></p>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
