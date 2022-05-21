@@ -19,8 +19,13 @@ def home():
 
 @main.route('/profile')
 def profile():
-
-    return render_template('profile.html')
+    if not session['logged_in']:
+        return redirect(url_for('main.login'))
+    email = session['email']
+    password = session['password']
+    engine = sql.create_engine(f"postgresql+psycopg2://{email.split('@')[0]}:{password}@localhost/{env('DB_NAME')}")
+    user = engine.execute(f"SELECT * FROM public.user WHERE email = '{email}'").fetchone()
+    return render_template('profile.html', user=user)
 
 
 @main.route('/reviews')
@@ -35,22 +40,22 @@ def subscription():
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
-
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
         engine = sql.create_engine(f"postgresql+psycopg2://{email.split('@')[0]}:{password}@localhost/{env('DB_NAME')}")
         session['logged_in'] = True
-        session['username'] = email.split('@')[0]
+        session['email'] = email
+        session['password'] = password
         return redirect(url_for('main.home'))
     return render_template('login.html')
 
 
 @main.route('/logout')
 def logout():
-    session.pop('logged_in', None)
-    session.pop('id', None)
-    session.pop('username', None)
+    session['logged_in'] = False
+    session.pop('email')
+    session.pop('password')
     return redirect(url_for('main.login'))
 
 
@@ -74,7 +79,9 @@ def registration():
             engine.execute(
                 f"CREATE ROLE {email.split('@')[0]} WITH LOGIN PASSWORD '{password}'")
             engine.execute(f"GRANT authenticated_user TO {email.split('@')[0]}")
-            new_user = models.User(first_name=first_name, last_name=last_name, email=email, birthday=birthday,
+            new_user = models.User(first_name=first_name.capitalize().strip(),
+                                   last_name=last_name.capitalize().strip(),
+                                   email=email, birthday=birthday,
                                    status='клиент')
             db.session.add(new_user)
             db.session.commit()

@@ -18,8 +18,8 @@
             <!-- MENU ENDS -->
             {% if session['logged_in'] %}
                 <div class="btn_wrapper">
-                    <a href="{{ url_for('main.profile') }}">Здравствуйте, {{ session['username'] }}</a>
-                    <a href="{{ url_for('main.logout') }}">Выход</a>
+                    <a href="{{ url_for('main.profile') }}">Здравствуйте, {{ session['email'] }}</a>
+                    <a href="{{ url_for('main.logout') }}" class="btn">Выход</a>
                 </div>
             {% else %}
                 <div class="btn_wrapper">
