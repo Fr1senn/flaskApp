@@ -10,17 +10,20 @@
                     {% with messages = get_flashed_messages(with_categories=true) %}
                         {% for category, message in messages %}
                             {% if category =='error' %}
-                                <h2>{{ message }}</h2>
+                                <div class="msg_spot_err">
+                                    <h6>{{ message }}</h6>
+                                </div>
                             {% endif %}
                         {% endfor %}
                     {% endwith %}
+
                     <form class="sign_form" method="post">
                         <label for="first_name">Укажите имя</label>
                         <input type="text" name="first_name">
 
                         <label for="last_name">Укажите фамилию</label>
-                        <input type="text" name="last_name
-">
+                        <input type="text" name="last_name">
+
                         <label for="email">Укажите email</label>
                         <input type="email" name="email">
 

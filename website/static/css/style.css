@@ -57,6 +57,19 @@ html {
     flex-grow: 1;
 }
 
+.msg_spot_err{
+    width: 25%;
+    margin: 10px auto;
+    border: 1px solid black;
+    color: white;
+    background-color: darkred;
+}
+
+.msg_spot_err h6{
+    font-size: 18px;
+    text-align: center;
+}
+
 .container {
     max-width: 1200px;
     width: 100%;

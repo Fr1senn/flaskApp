@@ -1,25 +1,32 @@
 <!-- HEADER BEGIN -->
-    <header class="header">
-        <div class="container">
-            <div class="header_inner">
-                <a href="{{ url_for('main.home') }}" class="logo">FIT-CLUB</a>
-                <!-- MENU BEGIN -->
-                <ul class="menu">
-                    <li class="menu_item">
-                        <a href="{{ url_for('main.reviews') }}" class="menu_item-link">Отзывы</a>
-                    </li>
-                    <li class="menu_item">
-                        <a href="about.html" class="menu_item-link">О Нас</a>
-                    </li>
-                    <li class="menu_item">
-                        <a href="{{ url_for('main.subscription') }}" class="menu_item-link">Абонементы</a>
-                    </li>
-                </ul>
-                <!-- MENU ENDS -->
+<header class="header">
+    <div class="container">
+        <div class="header_inner">
+            <a href="{{ url_for('main.home') }}" class="logo">FIT-CLUB</a>
+            <!-- MENU BEGIN -->
+            <ul class="menu">
+                <li class="menu_item">
+                    <a href="{{ url_for('main.reviews') }}" class="menu_item-link">Отзывы</a>
+                </li>
+                <li class="menu_item">
+                    <a href="about.html" class="menu_item-link">О Нас</a>
+                </li>
+                <li class="menu_item">
+                    <a href="{{ url_for('main.subscription') }}" class="menu_item-link">Абонементы</a>
+                </li>
+            </ul>
+            <!-- MENU ENDS -->
+            {% if session['logged_in'] %}
+                <div class="btn_wrapper">
+                    <a href="{{ url_for('main.profile') }}">Здравствуйте, {{ session['username'] }}</a>
+                    <a href="{{ url_for('main.logout') }}">Выход</a>
+                </div>
+            {% else %}
                 <div class="btn_wrapper">
                     <a href="{{ url_for('main.login') }}" class="btn">Войти</a>
                 </div>
-            </div>
+            {% endif %}
         </div>
-    </header>
-    <!-- HEADER ENDS -->
+    </div>
+</header>
+<!-- HEADER ENDS -->

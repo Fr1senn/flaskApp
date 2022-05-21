@@ -7,6 +7,17 @@
                 <div class="sign_inner">
                     <h2>Авторизация</h2>
                     <hr>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% for category, message in messages %}
+                            {% if category =='error' %}
+                                <h2>{{ message }}</h2>
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                    {{ res }}
+                    {% for item in res %}
+                        <p>{{ item[0] }}</p>
+                    {% endfor %}
                     <form class="sign_form" action="" method="post">
                         <label for="email">Укажите email</label>
                         <input type="email" name="email">

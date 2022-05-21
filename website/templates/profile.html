@@ -1,40 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Кабинет</title>
-</head>
-
-<body>
-    <!-- HEADER BEGIN -->
-    <header class="header">
-        <div class="container">
-            <div class="header_inner">
-                <a href="index.html" class="logo">F-CLUB</a>
-                <!-- MENU BEGIN -->
-                <ul class="menu">
-                    <li class="menu_item">
-                        <a href="reviews.html" class="menu_item-link">Отзывы</a>
-                    </li>
-                    <li class="menu_item">
-                        <a href="about.html" class="menu_item-link">О Нас</a>
-                    </li>
-                    <li class="menu_item">
-                        <a href="subscriptions.html" class="menu_item-link">Абонементы</a>
-                    </li>
-                </ul>
-                <!-- MENU ENDS -->
-                <div class="btn_wrapper">
-                    <a href="login.html" class="btn">Войти</a>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- HEADER ENDS -->
+{% extends 'base.html' %}
+{% block title %}Кабинет{% endblock %}
+{% block content %}
     <div class="content">
         <section class="cabinet">
             <div class="container">
@@ -113,15 +79,4 @@
             </div>
         </section>
     </div>
-    <!-- FOOTER BEGIN -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer_inner">
-                <h2 class="footer_title">© F-CLUB 2015. Все права защищены</h2>
-            </div>
-        </div>
-    </footer>
-    <!-- FOOTER ENDS -->
-</body>
-
-</html>
+{% endblock %}

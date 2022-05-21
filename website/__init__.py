@@ -1,10 +1,8 @@
 from flask import Flask
+from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from environ import Env
-
-from .admin import admin
-from .main import main
 
 db = SQLAlchemy()
 env = Env()
@@ -22,7 +20,9 @@ def create_app():
 
     migrate = Migrate(app, db)
 
+    from .main import main
+    from .admin import admin
+
     app.register_blueprint(admin, url_prefix='/admin')
     app.register_blueprint(main, url_prefix='/')
-
     return app
