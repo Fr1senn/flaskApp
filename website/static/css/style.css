@@ -19,6 +19,13 @@ h6 {
     font-family: 'Open Sans', sans-serif;
 }
 
+h2 {
+    font-size: 40px;
+    font-weight: 700;
+    text-align: center;
+    margin: 10px 0;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -29,35 +36,39 @@ html {
     height: 100%;
 }
 
-.table{
-	border: 1px solid #eee;
-	table-layout: fixed;
-	width: 100%;
-	margin-bottom: 20px;
+.table {
+    border: 1px solid #eee;
+    table-layout: fixed;
+    width: 100%;
+    margin-bottom: 20px;
 }
+
 .table th {
-	font-weight: bold;
-	padding: 5px;
-	background: #efefef;
-	border: 1px solid #dddddd;
+    font-weight: bold;
+    padding: 5px;
+    background: #efefef;
+    border: 1px solid #dddddd;
 }
-.table td{
-	padding: 5px 10px;
-	border: 1px solid #eee;
-	text-align: left;
+
+.table td {
+    padding: 5px 10px;
+    border: 1px solid #eee;
+    text-align: left;
 }
-.table tbody tr:nth-child(odd){
-	background: #fff;
+
+.table tbody tr:nth-child(odd) {
+    background: #fff;
 }
-.table tbody tr:nth-child(even){
-	background: #F7F7F7;
+
+.table tbody tr:nth-child(even) {
+    background: #F7F7F7;
 }
 
 .content {
     flex-grow: 1;
 }
 
-.msg_spot_err{
+.msg_spot_err {
     width: 25%;
     margin: 10px auto;
     border: 1px solid black;
@@ -65,7 +76,7 @@ html {
     background-color: darkred;
 }
 
-.msg_spot_err h6{
+.msg_spot_err h6 {
     font-size: 18px;
     text-align: center;
 }
@@ -200,6 +211,11 @@ html {
     background-color: lightgreen;
 }
 
+.footer h2{
+    font-size: 20px;
+    margin: 5px;
+}
+
 .footer_title {
     text-align: center;
 }
@@ -251,8 +267,8 @@ html {
 .item_img-wrapper img {
     display: block;
     margin: 0 auto;
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
 }
 
 .item-content-wrapper {
@@ -277,16 +293,43 @@ html {
     font-weight: 400;
 }
 
+.review_form-wrapper {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.review_form-wrapper textarea {
+    display: block;
+    margin: 5px auto;
+    width: 75%;
+}
+
+.review_form-wrapper textarea:focus {
+    outline: none;
+}
+
+.review_form-wrapper form button {
+    display: block;
+    margin: 5px auto;
+    background-color: transparent;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 6px 8px;
+}
+
+.review_form-wrapper form button:hover {
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    transition: .2s;
+}
+
 /* REVIEWS ENDS */
 
 /* ABOUT BEGIN */
 
-.about .container h2 {
-    font-size: 40px;
-    font-weight: 700;
-    text-align: center;
-    margin: 10px 0;
-}
 
 .about .container p {
     font-size: 16px;
@@ -351,12 +394,6 @@ html {
     margin: 20px auto;
 }
 
-.sign_inner h2 {
-    font-size: 40px;
-    font-weight: 700;
-    text-align: center;
-    margin: 10px 0;
-}
 
 .sign_form input {
     display: block;
@@ -407,12 +444,6 @@ html {
 
 /* CABINET BEGIN */
 
-.cabinet_inner h2 {
-    font-size: 40px;
-    font-weight: 700;
-    text-align: center;
-    margin: 10px 0;
-}
 
 /* PERSONAL INFO BEGIN */
 

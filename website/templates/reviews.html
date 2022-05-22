@@ -5,16 +5,37 @@
         <section class="reviews">
             <div class="container">
                 <div class="reviews_inner">
-                    <div class="reviews_item">
-                        <div class="item_img-wrapper">
+                    <h2>Отзывы</h2>
+                    <hr>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% for category, message in messages %}
+                            {% if category =='error' %}
+                                <div class="msg_spot_err">
+                                    <h6>{{ message }}</h6>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                    {% for review in reviews %}
+                        <div class="reviews_item">
+                            <div class="item_img-wrapper">
+                                <img src="{{ url_for('static', filename='images/user_icon.svg') }}" alt="">
+                            </div>
+                            <div class="item-content-wrapper">
+                                <h3>{{ review[1] }} {{ review[2] }}</h3>
+                                <p>{{ review[3] }}</p>
+                                <h3>{{ review[-1] }}</h3>
+                            </div>
                         </div>
-                        <div class="item-content-wrapper">
-                            <h2>John Doe</h2>
-                            <p>25.10.2001</p>
-                            <h3>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero sit possimus placeat
-                                ipsum quidem quos itaque! Similique quam possimus mollitia!</h3>
+                    {% endfor %}
+                    {% if session['logged_in'] %}
+                        <div class="review_form-wrapper">
+                            <form method="post">
+                                <textarea name="text" placeholder="Оставьте свой отзыв" rows="5"></textarea>
+                                <button type="submit">Отправить</button>
+                            </form>
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
             </div>
         </section>
