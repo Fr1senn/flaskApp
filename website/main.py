@@ -81,7 +81,7 @@ def registration():
             engine.execute(f"GRANT authenticated_user TO {email.split('@')[0]}")
             new_user = models.User(first_name=first_name.capitalize().strip(),
                                    last_name=last_name.capitalize().strip(),
-                                   email=email, birthday=birthday,
+                                   email=email.strip(), birthday=birthday,
                                    status='клиент')
             db.session.add(new_user)
             db.session.commit()

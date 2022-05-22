@@ -7,9 +7,6 @@ from . import db
 
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
-    __table_args__ = (
-        CheckConstraint('(клиент|сотрудник)'),
-    )
 
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
@@ -32,9 +29,6 @@ class User(db.Model, UserMixin):
 
 class Unit(db.Model):
     __tablename__ = 'unit'
-    __table_args__ = (
-        CheckConstraint('(килограмм|метр)'),
-    )
 
     id = db.Column(db.Integer, primary_key=True)
     unit = db.Column(db.String(50), nullable=False)
@@ -158,6 +152,8 @@ class UserPost(db.Model):
     __tablename__ = 'user_post'
 
     id = db.Column(db.Integer, primary_key=True)
+    salary = db.Column(db.Numeric(7, 2), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
 
@@ -167,13 +163,10 @@ class UserPost(db.Model):
 
 class UserProgress(db.Model):
     __tablename__ = 'user_progress'
-    __table_args__ = (
-        CheckConstraint('value > 0'),
-    )
 
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, default=datetime.now, nullable=False)
-    value = db.Column(db.Numeric(5, 2))
+    value = db.Column(db.Numeric(5, 2), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     unit_id = db.Column(db.Integer, db.ForeignKey('unit.id'), nullable=False)
 
@@ -183,9 +176,6 @@ class UserProgress(db.Model):
 
 class UserSubscriptionDuration(db.Model):
     __tablename__ = 'user_subscription_duration'
-    __table_args__ = (
-        CheckConstraint('price > 0'),
-    )
 
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, default=datetime.now, nullable=False)
