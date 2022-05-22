@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
-from werkzeug.security import generate_password_hash, check_password_hash
 from environ import Env
 import sqlalchemy as sql
+import psycopg2 as pg
 
+from . import connect_and_execute_query
 from . import models as models
 from . import db
 
@@ -17,25 +18,17 @@ def home():
     return render_template('index.html')
 
 
-@main.route('/profile')
-def profile():
-    if not session['logged_in']:
-        return redirect(url_for('main.login'))
-    email = session['email']
-    password = session['password']
-    engine = sql.create_engine(f"postgresql+psycopg2://{email.split('@')[0]}:{password}@localhost/{env('DB_NAME')}")
-    user = engine.execute(f"SELECT * FROM public.user WHERE email = '{email}'").fetchone()
-    return render_template('profile.html', user=user)
-
-
 @main.route('/reviews', methods=['GET', 'POST'])
 def reviews():
-    email = session['email']
-    password = session['password']
-    engine = sql.create_engine(f"postgresql+psycopg2://{email.split('@')[0]}:{password}@localhost/{env('DB_NAME')}")
+    result = connect_and_execute_query('''
+        SELECT first_name, last_name, date, text
+        FROM public.user
+        JOIN review ON review.user_id = public.user.id;
+    ''')
     if request.method == 'POST':
         text = request.form.get('text')
-        user = engine.execute(f"SELECT * FROM public.user WHERE email = '{email}'").fetchone()
+        user = connect_and_execute_query(f"SELECT * FROM public.user WHERE email = '{session['email']}'",
+                                         user=session['email'].split('@')[0], password=session['password'])
         if len(text) == 0:
             flash('Введите сообщение!', category='error')
             return redirect(url_for('main.reviews'))
@@ -43,17 +36,43 @@ def reviews():
         db.session.add(new_review)
         db.session.commit()
         return redirect(url_for('main.home'))
-    reviews = engine.execute('''
-        SELECT public.user.id, first_name, last_name, "date", "text"
-        FROM public.user
-        JOIN review ON review.user_id = public.user.id
-    ''')
-    return render_template('reviews.html', reviews=reviews)
+    return render_template('reviews.html', reviews=result)
 
 
-@main.route('/subscription')
+@main.route('/subscription', methods=['GET', 'POST'])
 def subscription():
-    return render_template('subscriptions.html')
+    if not session['logged_in']:
+        return redirect(url_for('main.registration'))
+    subs_list = connect_and_execute_query('''
+        SELECT title FROM subscription;
+    ''', user=session['email'].split('@')[0], password=session['password'])
+    subs_duration_list = connect_and_execute_query('''
+        SELECT duration FROM subscription_duration;
+    ''', user=session['email'].split('@')[0], password=session['password'])
+    if request.method == 'POST':
+        if str(request.form.get('sub')) == '---':
+            flash('Необходимо выбрать абонемент!', category='error')
+            return redirect(url_for('main.subscription'))
+        elif str(request.form.get('sub_duration')) == '---':
+            flash('Необходимо выбрать длительность абонемента!', category='error')
+            return redirect(url_for('main.subscription'))
+        else:
+            sub_id = connect_and_execute_query(f'''
+                SELECT id FROM subscription WHERE title = '{request.form.get('sub')}'
+            ''', user=session['email'].split('@')[0], password=session['password'])
+            sub_dur_id = connect_and_execute_query(f'''
+                SELECT id FROM subscription_duration WHERE duration = '{request.form.get('sub_duration')}'
+            ''', user=session['email'].split('@')[0], password=session['password'])
+            user_subs_dur = models.UserSubscriptionDuration(user_id=session['user_id'],
+                                                            subscription_id=sub_id[0],
+                                                            subscription_duration_id=sub_dur_id[0],
+                                                            price=len(str(request.form.get('sub'))) * int(
+                                                                request.form.get('sub_duration').split(',')[0].split(
+                                                                    ' ')[0]))
+            db.session.add(user_subs_dur)
+            db.session.commit()
+            return redirect(url_for('profile.home'))
+    return render_template('subscriptions.html', subs=subs_list, subs_dur=subs_duration_list)
 
 
 @main.route('/login', methods=['GET', 'POST'])
@@ -61,8 +80,9 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        engine = sql.create_engine(f"postgresql+psycopg2://guest:guest@localhost/{env('DB_NAME')}")
-        user = engine.execute(f"SELECT * FROM public.user WHERE email = '{email}'").fetchone()
+        user = connect_and_execute_query(f'''
+            SELECT * FROM public.user WHERE email = '{email}'
+        ''')
         if user is None:
             flash('Пользователь не сущесвует!', category='error')
             return redirect(url_for('main.login'))
@@ -85,9 +105,9 @@ def logout():
 
 @main.route('/registration', methods=['GET', 'POST'])
 def registration():
+    if session['logged_in']:
+        return redirect(url_for('profile.home'))
     if request.method == 'POST':
-        engine = sql.create_engine(f"postgresql+psycopg2://guest:guest@localhost/{env('DB_NAME')}")
-
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
         email = request.form.get('email')
@@ -100,9 +120,9 @@ def registration():
         elif password != password_confirm:
             flash('Пароли не совпадают', category='error')
         else:
-            engine.execute(
+            connect_and_execute_query(
                 f"CREATE ROLE {email.split('@')[0]} WITH LOGIN PASSWORD '{password}'")
-            engine.execute(f"GRANT authenticated_user TO {email.split('@')[0]}")
+            connect_and_execute_query(f"GRANT authenticated_user TO {email.split('@')[0]}")
             new_user = models.User(first_name=first_name.capitalize().strip(),
                                    last_name=last_name.capitalize().strip(),
                                    email=email.strip(), birthday=birthday,
@@ -111,5 +131,4 @@ def registration():
             db.session.commit()
             flash('Аккаунт успешно создан!', category='success')
             return redirect(url_for('main.login'))
-
     return render_template('registration.html')
