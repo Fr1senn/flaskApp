@@ -28,9 +28,27 @@ def profile():
     return render_template('profile.html', user=user)
 
 
-@main.route('/reviews')
+@main.route('/reviews', methods=['GET', 'POST'])
 def reviews():
-    return render_template('reviews.html')
+    email = session['email']
+    password = session['password']
+    engine = sql.create_engine(f"postgresql+psycopg2://{email.split('@')[0]}:{password}@localhost/{env('DB_NAME')}")
+    if request.method == 'POST':
+        text = request.form.get('text')
+        user = engine.execute(f"SELECT * FROM public.user WHERE email = '{email}'").fetchone()
+        if len(text) == 0:
+            flash('Введите сообщение!', category='error')
+            return redirect(url_for('main.reviews'))
+        new_review = models.Review(text=text, user_id=user[0])
+        db.session.add(new_review)
+        db.session.commit()
+        return redirect(url_for('main.home'))
+    reviews = engine.execute('''
+        SELECT public.user.id, first_name, last_name, "date", "text"
+        FROM public.user
+        JOIN review ON review.user_id = public.user.id
+    ''')
+    return render_template('reviews.html', reviews=reviews)
 
 
 @main.route('/subscription')
@@ -43,10 +61,15 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        engine = sql.create_engine(f"postgresql+psycopg2://{email.split('@')[0]}:{password}@localhost/{env('DB_NAME')}")
+        engine = sql.create_engine(f"postgresql+psycopg2://guest:guest@localhost/{env('DB_NAME')}")
+        user = engine.execute(f"SELECT * FROM public.user WHERE email = '{email}'").fetchone()
+        if user is None:
+            flash('Пользователь не сущесвует!', category='error')
+            return redirect(url_for('main.login'))
         session['logged_in'] = True
         session['email'] = email
         session['password'] = password
+        session['user_id'] = user[0]
         return redirect(url_for('main.home'))
     return render_template('login.html')
 
@@ -56,6 +79,7 @@ def logout():
     session['logged_in'] = False
     session.pop('email')
     session.pop('password')
+    session.pop('user_id')
     return redirect(url_for('main.login'))
 
 
