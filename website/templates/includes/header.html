@@ -9,13 +9,13 @@
                     <a href="{{ url_for('main.reviews') }}" class="menu_item-link">Отзывы</a>
                 </li>
                 <li class="menu_item">
-                    <a href="{{ url_for('main.subscription') }}" class="menu_item-link">Абонементы</a>
+                    <a href="{{ url_for('main.subscription') }}" class="menu_item-link">Приобрести абонемент</a>
                 </li>
             </ul>
             <!-- MENU ENDS -->
             {% if session['logged_in'] %}
                 <div class="btn_wrapper">
-                    <a href="{{ url_for('main.profile') }}" class="btn">Кабинет</a>
+                    <a href="{{ url_for('profile.home') }}" class="btn">Кабинет</a>
                     <a href="{{ url_for('main.logout') }}" class="btn">Выход</a>
                 </div>
             {% else %}
