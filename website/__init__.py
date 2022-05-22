@@ -1,12 +1,26 @@
 from flask import Flask
-from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from environ import Env
+import psycopg2 as pg
 
 db = SQLAlchemy()
 env = Env()
 env.read_env()
+
+
+def connect_and_execute_query(query, dbname='fitclub', user='guest', password='guest'):
+    try:
+        connection = pg.connect(dbname=dbname, user=user, password=password)
+        cursor = connection.cursor()
+        cursor.execute(query)
+        result = cursor.fetchall()
+        connection.commit()
+        cursor.close()
+        connection.close()
+        return result
+    except pg.Error as err:
+        return err.pgerror
 
 
 def create_app():
@@ -22,7 +36,9 @@ def create_app():
 
     from .main import main
     from .admin import admin
+    from .profile import profile
 
     app.register_blueprint(admin, url_prefix='/admin')
+    app.register_blueprint(profile, url_prefix='/profile')
     app.register_blueprint(main, url_prefix='/')
     return app
