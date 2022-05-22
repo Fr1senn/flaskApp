@@ -89,7 +89,7 @@ def login():
         session['logged_in'] = True
         session['email'] = email
         session['password'] = password
-        session['user_id'] = user[0]
+        session['user_id'] = user[0][0]
         return redirect(url_for('main.home'))
     return render_template('login.html')
 
