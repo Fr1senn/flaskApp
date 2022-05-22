@@ -2,14 +2,42 @@
 {% block title %}Абонементы{% endblock %}
 {% block content %}
     <div class="content">
+
         <!-- SUBSCRIPTIONS BEGIN -->
         <section class="subscriptions">
             <div class="container">
+                <h2>Приобрести абонемент</h2>
+                <hr>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% for category, message in messages %}
+                        {% if category =='error' %}
+                            <div class="msg_spot_err">
+                                <h6>{{ message }}</h6>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+                {{ curr }}
                 <div class="subscriptions_inner">
                     <div class="subscription_item">
-                        <p class="subs_title">Фитнес-клуб</p>
-                        <p class="subs_title">3 месяца</p>
-                        <p class="subs_title">450 грн.</p>
+                        <p class="subs_title"></p>
+                        <form method="post">
+                            <label for="sub">Выберете абонемент</label>
+                            <select name="sub" id="sub">
+                                <option>---</option>
+                                {% for sub in subs %}
+                                    <option>{{ sub[0] }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="sub_duration">Выберете длительность абонемента</label>
+                            <select name="sub_duration" id="sub_dur">
+                                <option>---</option>
+                                {% for sub_dur in subs_dur %}
+                                    <option>{{ sub_dur[0] }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit">Приобрести</button>
+                        </form>
                     </div>
                 </div>
             </div>
