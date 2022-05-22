@@ -211,7 +211,7 @@ html {
     background-color: lightgreen;
 }
 
-.footer h2{
+.footer h2 {
     font-size: 20px;
     margin: 5px;
 }
@@ -230,9 +230,48 @@ html {
 }
 
 .subscription_item {
-    margin: 15px;
+    margin: 15px auto;
     border: 2px solid black;
-    width: 30%;
+    width: 50%;
+}
+
+.subscription_item form label {
+    display: block;
+    text-align: center;
+    margin: 5px;
+}
+
+.subscription_item form select {
+    display: block;
+    margin: 10px auto;
+    border: 2px solid black;
+    padding: 2px;
+}
+
+.subscription_item form select:focus {
+    outline: none;
+}
+
+.subscription_item form button {
+    display: block;
+    margin: 5px auto;
+    background-color: transparent;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 6px 8px;
+}
+
+.subscription_item form button:hover {
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    transition: .2s;
+}
+
+.subscription_item form h3 {
+    text-align: center;
 }
 
 .subs_img {
