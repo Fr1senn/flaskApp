@@ -5,6 +5,11 @@
             <a href="{{ url_for('main.home') }}" class="logo">FIT-CLUB</a>
             <!-- MENU BEGIN -->
             <ul class="menu">
+                {% if session['status'] == 'сотрудник' %}
+                    <li class="menu_item">
+                        <a href="{{ url_for('admin.home') }}" class="menu_item-link">Админ. Панель</a>
+                    </li>
+                {% endif %}
                 <li class="menu_item">
                     <a href="{{ url_for('main.reviews') }}" class="menu_item-link">Отзывы</a>
                 </li>
