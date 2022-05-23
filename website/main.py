@@ -122,15 +122,23 @@ def registration():
         elif password != password_confirm:
             flash('Пароли не совпадают', category='error')
         else:
-            connect_and_execute_query(
-                f"CREATE ROLE {email.split('@')[0]} WITH LOGIN PASSWORD '{password}'")
-            connect_and_execute_query(f"GRANT authenticated_user TO {email.split('@')[0]}")
+            conn = pg.connect(dbname='fitclub', user='guest', password='guest')
+            cursor = conn.cursor()
+            cursor.execute(f'''
+                CREATE ROLE {email.split('@')[0]} WITH LOGIN PASSWORD '{password}';
+            ''')
+            cursor.execute(f'''
+                GRANT authenticated_user TO {email.split('@')[0]};
+            ''')
             new_user = models.User(first_name=first_name.capitalize().strip(),
                                    last_name=last_name.capitalize().strip(),
                                    email=email.strip(), birthday=birthday,
                                    status='клиент')
             db.session.add(new_user)
             db.session.commit()
+            conn.commit()
+            cursor.close()
+            conn.close()
             flash('Аккаунт успешно создан!', category='success')
             return redirect(url_for('main.login'))
     return render_template('registration.html')

@@ -15,7 +15,7 @@ def home():
         return redirect(url_for('main.login'))
     user = connect_and_execute_query(f'''
         SELECT DISTINCT id, first_name, last_name, birthday, registration_date, unit, LAST_VALUE(value) OVER(PARTITION BY unit)
-        FROM get_user_info('baranov@gmail.com')
+        FROM get_user_info('{session['email']}')
     ''', user=session['email'].split('@')[0], password=session['password'])
     return render_template('profile/profile_base.html', user=user)
 
@@ -26,7 +26,7 @@ def purchases():
         return redirect(url_for('main.login'))
     user = connect_and_execute_query(f'''
             SELECT DISTINCT id, first_name, last_name, birthday, registration_date, unit, LAST_VALUE(value) OVER(PARTITION BY unit)
-            FROM get_user_info('baranov@gmail.com')
+            FROM get_user_info('{session['email']}')
         ''', user=session['email'].split('@')[0], password=session['password'])
     purchase_list = connect_and_execute_query(f'''
            SELECT first_name, last_name, price, date, title, duration
@@ -45,7 +45,7 @@ def attendance():
         return redirect(url_for('main.login'))
     user = connect_and_execute_query(f'''
             SELECT DISTINCT id, first_name, last_name, birthday, registration_date, unit, LAST_VALUE(value) OVER(PARTITION BY unit)
-            FROM get_user_info('baranov@gmail.com')
+            FROM get_user_info('{session['email']}')
         ''', user=session['email'].split('@')[0], password=session['password'])
     attendance_list = connect_and_execute_query(f'''
         SELECT first_name, last_name, attendance
@@ -63,7 +63,7 @@ def measurements():
         return redirect(url_for('main.login'))
     user = connect_and_execute_query(f'''
             SELECT DISTINCT id, first_name, last_name, birthday, registration_date, unit, LAST_VALUE(value) OVER(PARTITION BY unit)
-            FROM get_user_info('baranov@gmail.com')
+            FROM get_user_info('{session['email']}')
         ''', user=session['email'].split('@')[0], password=session['password'])
     measerement_list = connect_and_execute_query(f'''
         SELECT first_name, last_name, value, unit, date
