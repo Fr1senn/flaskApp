@@ -1,0 +1,30 @@
+{% extends 'admin/admin_base.html' %}
+{% block title %}Пользователи{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Инициалы</th>
+                    <th>Email</th>
+                    <th>День рождения</th>
+                    <th>День регистрации</th>
+                    <th>Статус</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <th>{{ user[1] }} {{ user[2] }}</th>
+                        <th>{{ user[3] }}</th>
+                        <th>{{ user[4] }}</th>
+                        <th>{{ user[5] }}</th>
+                        <th>{{ user[6] }}</th>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

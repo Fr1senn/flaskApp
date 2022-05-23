@@ -1,0 +1,28 @@
+{% extends 'admin/admin_base.html' %}
+{% block title %}Отзывы{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Инициалы</th>
+                    <th>Email</th>
+                    <th>Отзыв</th>
+                    <th>Дата написания</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for review in reviews %}
+                    <tr>
+                        <th>{{ review[0] }} {{ review[1] }}</th>
+                        <th>{{ review[2] }}</th>
+                        <th>{{ review[3]|truncate(70) }}</th>
+                        <th>{{ review[4].strftime('%Y-%m-%d') }}</th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

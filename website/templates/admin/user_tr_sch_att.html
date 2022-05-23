@@ -1,0 +1,26 @@
+{% extends 'admin/admin_base.html' %}
+{% block title %}График тренировок пользователей{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Инициалы</th>
+                    <th>Время тренировки</th>
+                    <th>Оборудование</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in user_tr_sch_att%}
+                    <tr>
+                        <th>{{ item[0] }} {{ item[1] }}</th>
+                        <th>{{ item[2] }}</th>
+                        <th>{{ item[3] }}</th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'admin/admin_base.html' %}
+{% block title %}Прогресс пользователей{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Инициалы</th>
+                    <th>Email</th>
+                    <th>Дата замеров</th>
+                    <th>Параметр</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for item in user_progress %}
+                    <tr>
+                        <th>{{ item[0] }} {{ item[1] }}</th>
+                        <th>{{ item[2] }}</th>
+                        <th>{{ item[3].strftime('%Y-%m-%d') }}</th>
+                        <th>{{ item[4] }} {{ item[5] }}</th>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
-{% block title %}Административная панель{% endblock %}
+{% block title %}Админ. Панель{% endblock %}
 {% block content %}
     <div class="content">
-        <h1>This is admin</h1>
+        <div class="container">
+            <a href="{{ url_for('admin.users') }}">Пользователи</a>
+            <a href="{{ url_for('admin.user_progress') }}">Прогресс пользователей</a>
+            <a href="{{ url_for('admin.user_subs_dur') }}">Покупки пользователей</a>
+            <a href="{{ url_for('admin.user_tr_sch_att') }}">График тренировок пользователей</a>
+            <a href="{{ url_for('admin.reviews') }}">Отзывы</a>
+            <a href="{{ url_for('admin.user_schedule') }}">Расписание сотдруников</a>
+            <a href="{{ url_for('admin.user_post') }}">Должности сотдруников</a>
+        </div>
     </div>
 {% endblock %}
