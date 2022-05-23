@@ -1,0 +1,29 @@
+{% extends 'profile/profile_base.html' %}
+{% block history %}
+    <h2>История покупок</h2>
+    <hr>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Цена</th>
+            <th>Дата покупки</th>
+            <th>Абонемент</th>
+            <th>Срок действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in purchase_list %}
+            <tr>
+                <th>{{ item[0] }}</th>
+                <th>{{ item[1] }}</th>
+                <th>{{ item[2] }} грн.</th>
+                <th>{{ item[3].strftime('%Y-%m-%d') }}</th>
+                <th>{{ item[4] }}</th>
+                <th>{{ item[5] }}</th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

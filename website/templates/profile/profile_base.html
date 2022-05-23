@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Кабинет{% endblock %}
+{% block content %}
+    <div class="content">
+        <section class="cabinet">
+            <div class="container">
+                <div class="cabinet_inner">
+                    <h2>Личный кабинет</h2>
+                    <hr>
+                    <!-- PERSONAL INFO BEGIN -->
+                    <section class="personal_info">
+                        <div class="info_img-wrapper">
+                            <img src="{{ url_for('static', filename='images/user_icon.svg') }}" alt="">
+                        </div>
+                        <div class="info_content-wrapper">
+                            <h2>{{ user[0][1] }} {{ user[0][2] }}</h2>
+                            <hr>
+                            <h3>
+                                <span>Номер клубной карты:</span> {{ user[0][0] }}
+                            </h3>
+                            <h3>
+                                <span>Дата рождения:</span> {{ user[0][3] }}
+                            </h3>
+                            <h3>
+                                <span>Дата регистрации:</span> {{ user[0][4] }}
+                            </h3>
+                            <h3>
+                                {% if user[0][6] == None %}
+                                    <span>Текущий рост:</span> информация отсутсвует
+                                {% else %}
+                                    <span>Текущий рост:</span> {{ user[0][6] }} {{ user[0][5] }}
+                                {% endif %}
+                            </h3>
+                            <h3>
+                                {% if user[1][6] == None %}
+                                    <span>Текущий вес:</span> информация отсутсвует
+                                {% else %}
+                                    <span>Текущий вес:</span> {{ user[1][6] }} {{ user[1][5] }}
+                                {% endif %}
+
+                            </h3>
+                        </div>
+                    </section>
+                    <!-- PERSONAL INFO ENDS -->
+                    <hr>
+                    <section class="history">
+                        <div class="history_btn">
+                            <a class="btn" href="{{ url_for('profile.purchases') }}">Покупки</a>
+                        </div>
+                        <div class="history_btn">
+                            <a class="btn" href="{{ url_for('profile.attendance') }}">Посещения</a>
+                        </div>
+                        <div class="history_btn">
+                            <a class="btn" href="{{ url_for('profile.measurements') }}">Замеры</a>
+                        </div>
+                    </section>
+                    <hr>
+                    <!-- HISTORY BEGIN -->
+                    <div class="history_table">
+                        {% block history %}
+                        {% endblock %}
+                    </div>
+                    <!-- HISTORY ENDS -->
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

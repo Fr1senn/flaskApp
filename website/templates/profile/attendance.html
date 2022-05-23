@@ -1,0 +1,23 @@
+{% extends 'profile/profile_base.html' %}
+{% block history %}
+    <h2>История посещений</h2>
+    <hr>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Время посещения</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in attendance_list %}
+        <tr>
+            <th>{{ item[0] }}</th>
+            <th>{{ item[1] }}</th>
+            <th>{{ item[2] }}</th>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
