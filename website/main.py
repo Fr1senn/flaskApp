@@ -42,7 +42,7 @@ def reviews():
 @main.route('/subscription', methods=['GET', 'POST'])
 def subscription():
     if not session['logged_in']:
-        return redirect(url_for('main.registration'))
+        return redirect(url_for('main.login'))
     subs_list = connect_and_execute_query('''
         SELECT title FROM subscription;
     ''', user=session['email'].split('@')[0], password=session['password'])
@@ -90,6 +90,7 @@ def login():
         session['email'] = email
         session['password'] = password
         session['user_id'] = user[0][0]
+        session['status'] = user[0][6]
         return redirect(url_for('main.home'))
     return render_template('login.html')
 
@@ -100,6 +101,7 @@ def logout():
     session.pop('email')
     session.pop('password')
     session.pop('user_id')
+    session.pop('status')
     return redirect(url_for('main.login'))
 
 
