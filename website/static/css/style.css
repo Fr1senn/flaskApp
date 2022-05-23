@@ -203,18 +203,18 @@ html {
     margin: 5px;
 }
 
-.subscription_item form select {
+select {
     display: block;
     margin: 10px auto;
     border: 2px solid black;
     padding: 2px;
 }
 
-.subscription_item form select:focus {
+select:focus {
     outline: none;
 }
 
-.subscription_item form button {
+button {
     display: block;
     margin: 5px auto;
     background-color: transparent;
@@ -225,7 +225,7 @@ html {
     padding: 6px 8px;
 }
 
-.subscription_item form button:hover {
+button:hover {
     cursor: pointer;
     background-color: black;
     color: white;
@@ -309,23 +309,6 @@ html {
     outline: none;
 }
 
-.review_form-wrapper form button {
-    display: block;
-    margin: 5px auto;
-    background-color: transparent;
-    border: 2px solid black;
-    border-radius: 5px;
-    font-weight: 500;
-    font-size: 14px;
-    padding: 6px 8px;
-}
-
-.review_form-wrapper form button:hover {
-    cursor: pointer;
-    background-color: black;
-    color: white;
-    transition: .2s;
-}
 
 /* REVIEWS ENDS */
 
@@ -396,7 +379,7 @@ html {
 }
 
 
-.sign_form input {
+input {
     display: block;
     margin: 5px auto;
     border: 2px solid lightgreen;
@@ -404,32 +387,15 @@ html {
     font-size: 14px;
 }
 
-.sign_form input:focus {
+input:focus {
     outline: none;
 }
 
-.sign_form input::placeholder {
+input::placeholder {
     font-weight: 400;
     font-size: 14px;
 }
 
-.sign_form button {
-    display: block;
-    margin: 10px auto;
-    background-color: transparent;
-    border: 2px solid lightgreen;
-    color: black;
-    font-weight: 400;
-    font-size: 14px;
-    padding: 8px;
-    border-radius: 5px;
-}
-
-.sign_form button:hover {
-    cursor: pointer;
-    background-color: lightgreen;
-    transition: .2s;
-}
 
 .sign_inner p {
     text-align: center;
@@ -489,11 +455,11 @@ html {
     margin: 10px auto;
 }
 
-.history .history_btn{
+.history .history_btn {
     margin: 10px 0;
 }
 
-.history .history_btn .btn:hover{
+.history .history_btn .btn:hover {
     color: white;
 }
 

@@ -1,24 +1,24 @@
 {% extends 'admin/admin_base.html' %}
-{% block title %}Должности сотрудников{% endblock %}
+{% block title %}График сотрудников{% endblock %}
 {% block content %}
     <div class="content">
         <div class="container">
+            <h2>График сотрудников</h2>
+            <hr>
             <table class="table">
                 <thead>
                 <tr>
                     <th>Инициалы</th>
-                    <th>Должность</th>
-                    <th>Зарплата</th>
-                    <th>Дата трудоустройства</th>
+                    <th>Дата</th>
+                    <th>Длительность</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for item in user_post%}
+                {% for item in user_schedule %}
                     <tr>
                         <th>{{ item[0] }} {{ item[1] }}</th>
                         <th>{{ item[2] }}</th>
-                        <th>{{ item[3] }} грн.</th>
-                        <th>{{ item[4].strftime('%Y-%m-%d') }}</th>
+                        <th>{{ item[3] }}</th>
                     </tr>
                 {% endfor %}
                 </tbody>

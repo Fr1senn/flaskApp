@@ -1,22 +1,28 @@
 {% extends 'admin/admin_base.html' %}
-{% block title %}График тренировок пользователей{% endblock %}
+{% block title %}Покупки клиентов{% endblock %}
 {% block content %}
     <div class="content">
         <div class="container">
+            <h2>Покупки клиентов</h2>
+            <hr>
             <table class="table">
                 <thead>
                 <tr>
                     <th>Инициалы</th>
-                    <th>Время тренировки</th>
-                    <th>Оборудование</th>
+                    <th>Абонемент</th>
+                    <th>Длительность абонемента</th>
+                    <th>Дата покупки</th>
+                    <th>Стоимость</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for item in user_tr_sch_att%}
+                {% for item in user_subs_dur %}
                     <tr>
                         <th>{{ item[0] }} {{ item[1] }}</th>
                         <th>{{ item[2] }}</th>
                         <th>{{ item[3] }}</th>
+                        <th>{{ item[4].strftime('%Y-%m-%d') }}</th>
+                        <th>{{ item[5] }} грн.</th>
                     </tr>
                 {% endfor %}
                 </tbody>

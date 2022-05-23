@@ -5,7 +5,7 @@ $('.slider_inner').slick({
 });
 
 $('.subscription_item form button:button').click(function () {
-    sub = $('#sub').val().toString().length;
-    sub_dur = $('#sub_dur').val().toString()
+    let sub = $('#sub').val().toString().length;
+    let sub_dur = $('#sub_dur').val().toString()
     alert('Цена: ' + parseInt(sub_dur.split(',')[0].split(' ')[0]) * sub + ' грн');
 });

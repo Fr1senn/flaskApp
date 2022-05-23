@@ -98,10 +98,10 @@ def login():
 @main.route('/logout')
 def logout():
     session['logged_in'] = False
+    session['status'] = 'гость'
     session.pop('email')
     session.pop('password')
     session.pop('user_id')
-    session.pop('status')
     return redirect(url_for('main.login'))
 
 

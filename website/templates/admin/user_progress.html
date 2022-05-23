@@ -3,6 +3,8 @@
 {% block content %}
     <div class="content">
         <div class="container">
+            <h2>Прогресс пользователей</h2>
+            <hr>
             <table class="table">
                 <thead>
                 <tr>
@@ -13,14 +15,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                    {% for item in user_progress %}
+                {% for item in user_progress %}
                     <tr>
                         <th>{{ item[0] }} {{ item[1] }}</th>
                         <th>{{ item[2] }}</th>
                         <th>{{ item[3].strftime('%Y-%m-%d') }}</th>
                         <th>{{ item[4] }} {{ item[5] }}</th>
                     </tr>
-                    {% endfor %}
+                {% endfor %}
                 </tbody>
             </table>
         </div>
