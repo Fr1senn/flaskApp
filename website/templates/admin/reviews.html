@@ -8,8 +8,8 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Инициалы</th>
-                    <th>Email</th>
                     <th>Отзыв</th>
                     <th>Дата написания</th>
                 </tr>
@@ -17,8 +17,8 @@
                 <tbody>
                 {% for review in reviews %}
                     <tr>
-                        <th>{{ review[0] }} {{ review[1] }}</th>
-                        <th>{{ review[2] }}</th>
+                        <th>{{ review[0] }}</th>
+                        <th>{{ review[1] }} {{ review[2] }}</th>
                         <th>{{ review[3]|truncate(70) }}</th>
                         <th>{{ review[4].strftime('%Y-%m-%d') }}</th>
                     </tr>
