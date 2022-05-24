@@ -9,16 +9,16 @@
                 <thead>
                 <tr>
                     <th>Инициалы</th>
-                    <th>Дата</th>
-                    <th>Длительность</th>
+                    <th>Должность</th>
+                    <th>Зарплата</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for item in user_schedule %}
+                {% for item in user_post %}
                     <tr>
                         <th>{{ item[0] }} {{ item[1] }}</th>
                         <th>{{ item[2] }}</th>
-                        <th>{{ item[3] }}</th>
+                        <th>{{ item[3] }} грн.</th>
                     </tr>
                 {% endfor %}
                 </tbody>

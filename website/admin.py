@@ -67,7 +67,7 @@ def user_post():
         FROM public.user
         JOIN user_post ON user_id = public.user.id
         JOIN post ON post.id = post_id''', user=session['email'].split('@')[0], password=session['password'])
-    return render_template('admin/user_schedule.html', user_post=user_post_list)
+    return render_template('admin/user_post.html', user_post=user_post_list)
 
 
 @admin.route('/user_subscription_duration')
