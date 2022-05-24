@@ -3,13 +3,15 @@
 {% block content %}
     <div class="content">
         <div class="container">
-            <a href="{{ url_for('admin.users') }}">Пользователи</a>
-            <a href="{{ url_for('admin.user_progress') }}">Прогресс пользователей</a>
-            <a href="{{ url_for('admin.user_subscription_duration') }}">Покупки пользователей</a>
-            <a href="{{ url_for('admin.user_training_schedule_attendance') }}">График тренировок пользователей</a>
-            <a href="{{ url_for('admin.reviews') }}">Отзывы</a>
-            <a href="{{ url_for('admin.user_schedule') }}">Расписание сотдруников</a>
-            <a href="{{ url_for('admin.user_post') }}">Должности сотдруников</a>
+            <div class="admin-link_wrapper">
+                <a class="admin-link" href="{{ url_for('admin.users') }}">Пользователи</a>
+                <a class="admin-link" href="{{ url_for('admin.user_progress') }}">Прогресс пользователей</a>
+                <a class="admin-link" href="{{ url_for('admin.user_subscription_duration') }}">Покупки пользователей</a>
+                <a class="admin-link" href="{{ url_for('admin.user_training_schedule_attendance') }}">График тренировок пользователей</a>
+                <a class="admin-link" href="{{ url_for('admin.reviews') }}">Отзывы</a>
+                <a class="admin-link" href="{{ url_for('admin.user_schedule') }}">Расписание сотдруников</a>
+                <a class="admin-link" href="{{ url_for('admin.user_post') }}">Должности сотдруников</a>
+            </div>
         </div>
     </div>
 {% endblock %}

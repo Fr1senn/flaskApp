@@ -11,14 +11,16 @@
                     <th>Инициалы</th>
                     <th>Должность</th>
                     <th>Зарплата</th>
+                    <th>Дата трудоустройства</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for item in user_post %}
                     <tr>
                         <th>{{ item[0] }} {{ item[1] }}</th>
-                        <th>{{ item[2] }}</th>
+                        <th>{{ item[4] }}</th>
                         <th>{{ item[3] }} грн.</th>
+                        <th>{{ item[2].strftime('%Y-%m-%d') }}</th>
                     </tr>
                 {% endfor %}
                 </tbody>

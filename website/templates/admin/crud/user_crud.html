@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <form method="post">
+                <input name="first_name" type="text" value="{{ user[0][1] }}">
+                <input name="last_name" type="text" value="{{ user[0][2] }}">
+                <input name="email" type="text" value="{{ user[0][3] }}">
+                <input name="birthday" type="text" value="{{ user[0][4] }}">
+                <label style="text-align:center; display: block" for="status">Выберите статус</label>
+                <select name="status">
+                    {% for item in status %}
+                        {% if user[0][8] == item[0] %}
+                            <option selected>{{ item[0] }}</option>
+                        {% else %}
+                            <option>{{ item[0] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <label style="text-align:center; display: block" for="action">Выберите действие</label>
+                <select name="action">
+                    <option>Удалить</option>
+                    <option>Изменить</option>
+                </select>
+                <button type="submit">Подтвердить</button>
+            </form>
+
+        </div>
+    </div>
+{% endblock %}

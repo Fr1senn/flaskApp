@@ -19,7 +19,7 @@
                 <tbody>
                 {% for user in users %}
                     <tr>
-                        <th>{{ user[0] }}</th>
+                        <th><a href="{{ url_for('admin.user_crud', user_id=user[0]) }}">{{ user[0] }}</a></th>
                         <th>{{ user[1] }} {{ user[2] }}</th>
                         <th>{{ user[3] }}</th>
                         <th>{{ user[4] }}</th>
@@ -29,6 +29,7 @@
                 {% endfor %}
                 </tbody>
             </table>
+            <a href="">Добавить новую запись</a>
         </div>
     </div>
 {% endblock %}

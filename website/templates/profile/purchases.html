@@ -5,8 +5,7 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Имя</th>
-            <th>Фамилия</th>
+            <th>Инициалы</th>
             <th>Цена</th>
             <th>Дата покупки</th>
             <th>Абонемент</th>
@@ -16,8 +15,7 @@
         <tbody>
         {% for item in purchase_list %}
             <tr>
-                <th>{{ item[0] }}</th>
-                <th>{{ item[1] }}</th>
+                <th>{{ item[0] }} {{ item[1] }}</th>
                 <th>{{ item[2] }} грн.</th>
                 <th>{{ item[3].strftime('%Y-%m-%d') }}</th>
                 <th>{{ item[4] }}</th>

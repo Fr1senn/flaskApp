@@ -382,7 +382,7 @@ button:hover {
 input {
     display: block;
     margin: 5px auto;
-    border: 2px solid lightgreen;
+    border: 2px solid black;
     padding: 4px;
     font-size: 14px;
 }
@@ -466,3 +466,26 @@ input::placeholder {
 /* HISTORY ENDS */
 
 /* CABINET ENDS */
+
+/* ADMIN-PAGE BEGIN */
+
+.admin-link_wrapper{
+    border-right: 2px solid black;
+    width: 25%;
+}
+
+.admin-link{
+    display: block;
+    color: black;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    border: 2px solid black;
+    border-radius: 5px;
+    text-align: center;
+    width: 75%;
+    margin: 5px auto;
+    padding: 3px 5px;
+}
+
+/* ADMIN-PAGE ENDS*/

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from environ import Env
-import sqlalchemy as sql
+from werkzeug.security import check_password_hash
 import psycopg2 as pg
 
 from . import connect_and_execute_query
@@ -81,7 +81,10 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
         user = connect_and_execute_query(f'''
-            SELECT * FROM public.user WHERE email = '{email}'
+            SELECT public.user.id, title
+            FROM public.user
+            JOIN status ON status.id = status_id
+            WHERE email = '{email}';
         ''')
         if user is None:
             flash('Пользователь не сущесвует!', category='error')
@@ -90,7 +93,7 @@ def login():
         session['email'] = email
         session['password'] = password
         session['user_id'] = user[0][0]
-        session['status'] = user[0][6]
+        session['status'] = user[0][1]
         return redirect(url_for('main.home'))
     return render_template('login.html')
 
@@ -98,7 +101,7 @@ def login():
 @main.route('/logout')
 def logout():
     session['logged_in'] = False
-    session['status'] = 'гость'
+    session['status'] = 'Гость'
     session.pop('email')
     session.pop('password')
     session.pop('user_id')
@@ -122,7 +125,7 @@ def registration():
         elif password != password_confirm:
             flash('Пароли не совпадают', category='error')
         else:
-            conn = pg.connect(dbname='fitclub', user='guest', password='guest')
+            conn = pg.connect(dbname='fitclub')
             cursor = conn.cursor()
             cursor.execute(f'''
                 CREATE ROLE {email.split('@')[0]} WITH LOGIN PASSWORD '{password}';
@@ -130,15 +133,12 @@ def registration():
             cursor.execute(f'''
                 GRANT authenticated_user TO {email.split('@')[0]};
             ''')
-            new_user = models.User(first_name=first_name.capitalize().strip(),
-                                   last_name=last_name.capitalize().strip(),
-                                   email=email.strip(), birthday=birthday,
-                                   status='клиент')
-            db.session.add(new_user)
-            db.session.commit()
+            cursor.execute(f'''
+                INSERT INTO public.user(first_name, last_name, email, birthday)
+                VALUES('{first_name}', '{last_name}', '{email}', '{birthday}')
+            ''')
             conn.commit()
             cursor.close()
             conn.close()
-            flash('Аккаунт успешно создан!', category='success')
             return redirect(url_for('main.login'))
     return render_template('registration.html')

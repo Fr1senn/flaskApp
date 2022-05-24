@@ -5,16 +5,14 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Имя</th>
-            <th>Фамилия</th>
+            <th>Инициалы</th>
             <th>Время посещения</th>
         </tr>
         </thead>
         <tbody>
         {% for item in attendance_list %}
         <tr>
-            <th>{{ item[0] }}</th>
-            <th>{{ item[1] }}</th>
+            <th>{{ item[0] }} {{ item[1] }}</th>
             <th>{{ item[2] }}</th>
         </tr>
         {% endfor %}
