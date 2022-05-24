@@ -8,19 +8,21 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Инициалы</th>
-                    <th>Должность</th>
-                    <th>Зарплата</th>
                     <th>Дата трудоустройства</th>
+                    <th>Зарплата</th>
+                    <th>Должность</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for item in user_post %}
                     <tr>
-                        <th>{{ item[0] }} {{ item[1] }}</th>
-                        <th>{{ item[4] }}</th>
-                        <th>{{ item[3] }} грн.</th>
-                        <th>{{ item[2].strftime('%Y-%m-%d') }}</th>
+                        <th><a href="{{ url_for('admin.user_post_crud', user_post_id=item[0]) }}">{{ item[0] }}</a></th>
+                        <th>{{ item[1] }} {{ item[2] }}</th>
+                        <th>{{ item[3].strftime('%Y-%m-%d') }}</th>
+                        <th>{{ item[4] }} грн.</th>
+                        <th>{{ item[5] }}</th>
                     </tr>
                 {% endfor %}
                 </tbody>

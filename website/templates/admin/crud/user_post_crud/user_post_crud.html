@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="container">
+        {{ post_list }}
+            <form method="post">
+                <select name="status_id">
+                    {% for item in post_list %}
+                        {% if item[0] == user_post_list[0][2]  %}
+                            <option selected>{{ item[1] }}</option>
+                        {% else %}
+                            <option>{{ item[1] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <input name="salary" type="number" value="{{ user_post_list[0][3] }}">
+                <label for="action">Выберите действие</label>
+                <select name="action">
+                    <option>Удалить</option>
+                    <option>Изменить</option>
+                </select>
+                <button type="submit">Подтвердить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

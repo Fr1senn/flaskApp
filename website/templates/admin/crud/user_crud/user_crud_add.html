@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <form method="post">
+                <label for="first_name">Введите имя</label>
+                <input name="first_name" type="text">
+
+                <label for="last_name">Введите фамилию</label>
+                <input name="last_name" type="text">
+
+                <label for="email">Введите email</label>
+                <input name="email" type="email">
+
+                <label for="birthday">Введите дату рождения</label>
+                <input name="birthday" type="date">
+
+                <label style="text-align:center; display: block" for="status">Выберите статус</label>
+                <select name="status">
+                    {% for item in status_list %}
+                        <option>{{ item[0] }}</option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit">Подтвердить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

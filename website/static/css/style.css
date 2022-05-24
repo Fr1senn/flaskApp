@@ -68,7 +68,7 @@ html {
     flex-grow: 1;
 }
 
-.msg_spot_err {
+.msg_spot_err{
     width: 25%;
     margin: 10px auto;
     border: 1px solid black;
@@ -76,7 +76,7 @@ html {
     background-color: darkred;
 }
 
-.msg_spot_err h6 {
+.msg_spot_err h6{
     font-size: 18px;
     text-align: center;
 }
@@ -197,7 +197,7 @@ html {
     width: 50%;
 }
 
-.subscription_item form label {
+label {
     display: block;
     text-align: center;
     margin: 5px;
@@ -299,13 +299,13 @@ button:hover {
     margin: 0 auto;
 }
 
-.review_form-wrapper textarea {
+textarea {
     display: block;
     margin: 5px auto;
     width: 75%;
 }
 
-.review_form-wrapper textarea:focus {
+textarea:focus {
     outline: none;
 }
 
@@ -402,11 +402,6 @@ input::placeholder {
     font-size: 12px;
 }
 
-.sign_form label {
-    display: block;
-    text-align: center;
-}
-
 /* SIGN ENDS */
 
 /* CABINET BEGIN */
@@ -469,12 +464,12 @@ input::placeholder {
 
 /* ADMIN-PAGE BEGIN */
 
-.admin-link_wrapper{
+.admin-link_wrapper {
     border-right: 2px solid black;
     width: 25%;
 }
 
-.admin-link{
+.admin-link {
     display: block;
     color: black;
     text-decoration: none;
