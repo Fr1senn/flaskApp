@@ -3,7 +3,7 @@ from environ import Env
 from werkzeug.security import check_password_hash
 import psycopg2 as pg
 
-from . import connect_and_execute_query
+from . import connect_and_select
 from . import models as models
 from . import db
 
@@ -20,15 +20,15 @@ def home():
 
 @main.route('/reviews', methods=['GET', 'POST'])
 def reviews():
-    result = connect_and_execute_query('''
+    result = connect_and_select('''
         SELECT first_name, last_name, date, text
         FROM public.user
         JOIN review ON review.user_id = public.user.id;
     ''')
     if request.method == 'POST':
         text = request.form.get('text')
-        user = connect_and_execute_query(f"SELECT * FROM public.user WHERE email = '{session['email']}'",
-                                         user=session['email'].split('@')[0], password=session['password'])
+        user = connect_and_select(f"SELECT * FROM public.user WHERE email = '{session['email']}'",
+                                  user=session['email'].split('@')[0], password=session['password'])
         if len(text) == 0:
             flash('Введите сообщение!', category='error')
             return redirect(url_for('main.reviews'))
@@ -43,10 +43,10 @@ def reviews():
 def subscription():
     if not session['logged_in']:
         return redirect(url_for('main.login'))
-    subs_list = connect_and_execute_query('''
+    subs_list = connect_and_select('''
         SELECT title FROM subscription;
     ''', user=session['email'].split('@')[0], password=session['password'])
-    subs_duration_list = connect_and_execute_query('''
+    subs_duration_list = connect_and_select('''
         SELECT duration FROM subscription_duration;
     ''', user=session['email'].split('@')[0], password=session['password'])
     if request.method == 'POST':
@@ -57,10 +57,10 @@ def subscription():
             flash('Необходимо выбрать длительность абонемента!', category='error')
             return redirect(url_for('main.subscription'))
         else:
-            sub_id = connect_and_execute_query(f'''
+            sub_id = connect_and_select(f'''
                 SELECT id FROM subscription WHERE title = '{request.form.get('sub')}'
             ''', user=session['email'].split('@')[0], password=session['password'])
-            sub_dur_id = connect_and_execute_query(f'''
+            sub_dur_id = connect_and_select(f'''
                 SELECT id FROM subscription_duration WHERE duration = '{request.form.get('sub_duration')}'
             ''', user=session['email'].split('@')[0], password=session['password'])
             user_subs_dur = models.UserSubscriptionDuration(user_id=session['user_id'],
@@ -80,7 +80,7 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        user = connect_and_execute_query(f'''
+        user = connect_and_select(f'''
             SELECT public.user.id, title
             FROM public.user
             JOIN status ON status.id = status_id

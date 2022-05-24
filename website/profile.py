@@ -1,7 +1,7 @@
 from flask import Blueprint, session, redirect, render_template, url_for
 from environ import Env
 
-from . import connect_and_execute_query
+from . import connect_and_select
 
 profile = Blueprint('profile', __name__)
 
@@ -13,7 +13,7 @@ env.read_env()
 def home():
     if not session['logged_in']:
         return redirect(url_for('main.login'))
-    user = connect_and_execute_query(f'''
+    user = connect_and_select(f'''
         SELECT DISTINCT id, first_name, last_name, birthday, registration_date, unit, LAST_VALUE(value) OVER(PARTITION BY unit)
         FROM get_user_info('{session['email']}')
     ''', user=session['email'].split('@')[0], password=session['password'])
@@ -24,11 +24,11 @@ def home():
 def purchases():
     if not session['logged_in']:
         return redirect(url_for('main.login'))
-    user = connect_and_execute_query(f'''
+    user = connect_and_select(f'''
             SELECT DISTINCT id, first_name, last_name, birthday, registration_date, unit, LAST_VALUE(value) OVER(PARTITION BY unit)
             FROM get_user_info('{session['email']}')
         ''', user=session['email'].split('@')[0], password=session['password'])
-    purchase_list = connect_and_execute_query(f'''
+    purchase_list = connect_and_select(f'''
            SELECT first_name, last_name, price, date, title, duration
            FROM public.user
            JOIN user_subscription_duration ON user_id = public.user.id
@@ -43,11 +43,11 @@ def purchases():
 def attendance():
     if not session['logged_in']:
         return redirect(url_for('main.login'))
-    user = connect_and_execute_query(f'''
+    user = connect_and_select(f'''
             SELECT DISTINCT id, first_name, last_name, birthday, registration_date, unit, LAST_VALUE(value) OVER(PARTITION BY unit)
             FROM get_user_info('{session['email']}')
         ''', user=session['email'].split('@')[0], password=session['password'])
-    attendance_list = connect_and_execute_query(f'''
+    attendance_list = connect_and_select(f'''
         SELECT first_name, last_name, attendance
         FROM public.user
         JOIN user_training_schedule_attendance ON user_training_schedule_attendance.user_id = public.user.id
@@ -61,11 +61,11 @@ def attendance():
 def measurements():
     if not session['logged_in']:
         return redirect(url_for('main.login'))
-    user = connect_and_execute_query(f'''
+    user = connect_and_select(f'''
             SELECT DISTINCT id, first_name, last_name, birthday, registration_date, unit, LAST_VALUE(value) OVER(PARTITION BY unit)
             FROM get_user_info('{session['email']}')
         ''', user=session['email'].split('@')[0], password=session['password'])
-    measerement_list = connect_and_execute_query(f'''
+    measerement_list = connect_and_select(f'''
         SELECT first_name, last_name, value, unit, date
         FROM public.user
         JOIN user_progress ON user_progress.user_id = public.user.id
