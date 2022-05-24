@@ -9,7 +9,7 @@ env = Env()
 env.read_env()
 
 
-def connect_and_execute_query(query, dbname='fitclub', user='guest', password='guest'):
+def connect_and_select(query, dbname='fitclub', user='guest', password='guest'):
     try:
         connection = pg.connect(dbname=dbname, user=user, password=password)
         cursor = connection.cursor()
@@ -19,6 +19,18 @@ def connect_and_execute_query(query, dbname='fitclub', user='guest', password='g
         cursor.close()
         connection.close()
         return result
+    except pg.Error as err:
+        return err.pgerror
+
+
+def connect_and_iud(query, dbname='fitclub', user='guest', password='guest'):
+    try:
+        connection = pg.connect(dbname=dbname, user=user, password=password)
+        cursor = connection.cursor()
+        cursor.execute(query)
+        connection.commit()
+        cursor.close()
+        connection.close()
     except pg.Error as err:
         return err.pgerror
 
