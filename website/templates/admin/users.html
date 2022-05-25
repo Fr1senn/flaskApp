@@ -14,6 +14,9 @@
                     {% endif %}
                 {% endfor %}
             {% endwith %}
+            {% if session['status'] in ['Управляющий', 'Администратор'] %}
+                <a href="{{ url_for('crud.user_crud_add') }}">Добавить новую запись</a>
+            {% endif %}
             <table class="table">
                 <thead>
                 <tr>
@@ -28,7 +31,11 @@
                 <tbody>
                 {% for user in users %}
                     <tr>
-                        <th><a href="{{ url_for('crud.user_crud', user_id=user[0]) }}">{{ user[0] }}</a></th>
+                        {% if session['status'] in ['Управляющий', 'Администратор'] %}
+                            <th><a href="{{ url_for('crud.user_crud', user_id=user[0]) }}">{{ user[0] }}</a></th>
+                        {% else %}
+                            <th>{{ user[0] }}</th>
+                        {% endif %}
                         <th>{{ user[1] }} {{ user[2] }}</th>
                         <th>{{ user[3] }}</th>
                         <th>{{ user[4] }}</th>
@@ -38,7 +45,6 @@
                 {% endfor %}
                 </tbody>
             </table>
-            <a href="{{ url_for('crud.user_crud_add') }}">Добавить новую запись</a>
         </div>
     </div>
 {% endblock %}

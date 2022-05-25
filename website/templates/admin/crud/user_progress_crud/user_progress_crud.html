@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <h2>{{ user_list[0][2] }} {{ user_list[0][3] }}</h2>
+            <hr>
+            <form method="post">
+                <label for="h">Рост</label>
+                <input name="h" type="number" step="0.1" value="{{ user_list[1][4] }}">
+                <label for="w">Вес</label>
+                <input name="w" type="number" step="0.1" value="{{ user_list[0][4] }}">
+                <button type="submit">Подтвердить</button>
+            </form>
+            <hr>
+            <h2>Рост</h2>
+            <hr>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Инициалы</th>
+                    <th>Данные</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in height %}
+                    <tr>
+                        <th>{{ item[0] }} {{ item[1] }}</th>
+                        <th>{{ item[3] }} {{ item[2] }}</th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+            <h2>Вес</h2>
+            <hr>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Инициалы</th>
+                    <th>Данные</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in weight %}
+                    <tr>
+                        <th>{{ item[0] }} {{ item[1] }}</th>
+                        <th>{{ item[3] }} {{ item[2] }}</th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

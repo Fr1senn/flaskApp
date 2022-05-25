@@ -1,0 +1,33 @@
+{% extends 'admin/admin_base.html' %}
+{% block title %}График тренировок{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <h2>График тренировок</h2>
+            <hr>
+            {% if session['status'] in ['Тренер'] %}
+                <a href="{{ url_for('crud.tr_sch_eq_crud_add') }}">Добавить новую запись</a>
+            {% endif %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Оборудование</th>
+                    <th>Дата</th>
+                    <th>Длительность</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in tr_sch_eq_list %}
+                    <tr>
+                        <th><a href="{{ url_for('crud.tr_sch_eq_crud', tr_sch_eq_id=item[0]) }}">{{ item[0] }}</a></th>
+                        <th>{{ item[1] }}</th>
+                        <th>{{ item[2] }}</th>
+                        <th>{{ item[3] }}</th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

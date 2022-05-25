@@ -8,19 +8,22 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Инициалы</th>
-                    <th>Email</th>
-                    <th>Дата замеров</th>
-                    <th>Параметр</th>
+                    <th>Данные</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for item in user_progress %}
                     <tr>
-                        <th>{{ item[0] }} {{ item[1] }}</th>
-                        <th>{{ item[2] }}</th>
-                        <th>{{ item[3].strftime('%Y-%m-%d') }}</th>
-                        <th>{{ item[4] }} {{ item[5] }}</th>
+                        {% if session['status'] in ['Тренер'] %}
+                            <th><a href="{{ url_for('crud.user_progress_crud', user_id=item[0]) }}">{{ item[0] }}</a>
+                            </th>
+                        {% else %}
+                            <th>{{ item[0] }}</th>
+                        {% endif %}
+                        <th>{{ item[1] }} {{ item[2] }}</th>
+                        <th>{{ item[4] }} {{ item[3] }}</th>
                     </tr>
                 {% endfor %}
                 </tbody>

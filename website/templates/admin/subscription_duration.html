@@ -5,6 +5,9 @@
         <div class="container">
             <h2>Длительность абонементов</h2>
             <hr>
+            {% if session['status'] in ['Управляющий'] %}
+                <a href="{{ url_for('crud.subs_dur_crud_add') }}">Добавить новую запись</a>
+            {% endif %}
             <table class="table">
                 <thead>
                 <tr>
@@ -15,13 +18,17 @@
                 <tbody>
                 {% for item in subs_dur_list %}
                     <tr>
-                        <th><a href="{{ url_for('crud.subs_dur_crud', subs_dur_id=item[0]) }}">{{ item[0] }}</a></th>
+                        {% if session['status'] in ['Управляющий'] %}
+                            <th><a href="{{ url_for('crud.subs_dur_crud', subs_dur_id=item[0]) }}">{{ item[0] }}</a>
+                            </th>
+                        {% else %}
+                            <th>{{ item[0] }}</th>
+                        {% endif %}
                         <th>{{ item[1] }}</th>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-        <a href="{{ url_for('crud.subs_dur_crud_add') }}">Добавить новую запись</a>
         </div>
     </div>
 {% endblock %}

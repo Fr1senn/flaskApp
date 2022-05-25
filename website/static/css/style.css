@@ -483,4 +483,10 @@ input::placeholder {
     padding: 3px 5px;
 }
 
+.admin-link:hover{
+    color: white;
+    background-color: black;
+    transition: .2s;
+}
+
 /* ADMIN-PAGE ENDS*/

@@ -43,10 +43,12 @@ def user_progress():
     if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
         return redirect(url_for('main.home'))
     user_progress_list = connect_and_select('''
-        SELECT first_name, last_name, email, date, value, unit
+        SELECT DISTINCT public.user.id, first_name, last_name, unit,
+        LAST_VALUE(value) OVER(PARTITION BY unit, public.user.id)
         FROM public.user
         JOIN user_progress ON user_id = public.user.id
-        JOIN unit ON unit.id = unit_id''', user=session['email'].split('@')[0], password=session['password'])
+        JOIN unit ON unit.id = unit_id
+        ORDER BY public.user.id''', user=session['email'].split('@')[0], password=session['password'])
     return render_template('admin/user_progress.html', user_progress=user_progress_list)
 
 
@@ -55,7 +57,7 @@ def user_schedule():
     if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
         return redirect(url_for('main.home'))
     user_schedule_list = connect_and_select('''
-        SELECT first_name, last_name, date, duration
+        SELECT user_schedule.id, first_name, last_name, date, duration
         FROM public.user
         JOIN user_schedule ON user_id = public.user.id
         JOIN schedule ON schedule.id = schedule_id''', user=session['email'].split('@')[0],
@@ -126,3 +128,26 @@ def subscription():
         SELECT * FROM subscription WHERE id != 0;
     ''', user=session['email'].split('@')[0], password=session['password'])
     return render_template('admin/subscription.html', subs_list=subs_list)
+
+
+@admin.route('/training_schedule_equipment')
+def training_schedule_equipment():
+    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+        return redirect(url_for('main.home'))
+    tr_sch_eq_list = connect_and_select('''
+        SELECT training_schedule_equipment.id, title, date, duration
+        FROM equipment
+        JOIN training_schedule_equipment ON equipment_id = equipment.id
+        JOIN training_schedule ON training_schedule.id = training_schedule_id
+        ORDER BY training_schedule_equipment.id
+    ''', user=session['email'].split('@')[0], password=session['password'])
+    return render_template('admin/training_schedule_equipment.html', tr_sch_eq_list=tr_sch_eq_list)
+
+
+@admin.route('/equipment')
+def equipment():
+    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+        return redirect(url_for('main.home'))
+    eq_list = connect_and_select('''SELECT * FROM equipment''', user=session['email'].split('@')[0],
+                                 password=session['password'])
+    return render_template('admin/equipment.html', eq_list=eq_list)

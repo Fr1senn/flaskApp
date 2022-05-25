@@ -5,6 +5,9 @@
         <div class="container">
             <h2>Должности сотрудников</h2>
             <hr>
+            {% if session['status'] in ['Управляющий'] %}
+                <a href="{{ url_for('crud.user_post_crud_add') }}">Добавить новую запись</a>
+            {% endif %}
             <table class="table">
                 <thead>
                 <tr>
@@ -18,7 +21,12 @@
                 <tbody>
                 {% for item in user_post %}
                     <tr>
-                        <th><a href="{{ url_for('crud.user_post_crud', user_post_id=item[0]) }}">{{ item[0] }}</a></th>
+                        {% if session['status'] in ['Управляющий'] %}
+                            <th><a href="{{ url_for('crud.user_post_crud', user_post_id=item[0]) }}">{{ item[0] }}</a>
+                            </th>
+                        {% else %}
+                            <th>{{ item[0] }}</th>
+                        {% endif %}
                         <th>{{ item[1] }} {{ item[2] }}</th>
                         <th>{{ item[3].strftime('%Y-%m-%d') }}</th>
                         <th>{{ item[4] }} грн.</th>
@@ -27,7 +35,6 @@
                 {% endfor %}
                 </tbody>
             </table>
-        <a href="{{ url_for('crud.user_post_crud_add') }}">Добавить новую запись</a>
         </div>
     </div>
 {% endblock %}

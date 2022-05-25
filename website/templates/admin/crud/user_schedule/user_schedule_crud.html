@@ -3,19 +3,12 @@
 {% block content %}
     <div class="content">
         <div class="container">
-            <h2>{{ user_list[0][1] }} {{ user_list[0][2] }}</h2>
+            <h2>{{ user_schedule_list[0][3] }} {{ user_schedule_list[0][4] }}</h2>
             <hr>
+            {{ user_schedule_list }}
             <form method="post">
-                <select name="status_id">
-                    {% for item in post_list %}
-                        {% if item[0] == user_post_list[0][2] %}
-                            <option selected>{{ item[1] }}</option>
-                        {% else %}
-                            <option>{{ item[1] }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-                <input name="salary" type="number" value="{{ user_post_list[0][3] }}">
+                <input name="date" type="text" value="{{ user_schedule_list[0][5] }}">
+                <input name="duration" type="text" value="{{ user_schedule_list[0][6] }}">
                 <label for="action">Выберите действие</label>
                 <select name="action">
                     <option>Удалить</option>

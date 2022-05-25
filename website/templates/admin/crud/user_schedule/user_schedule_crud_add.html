@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <form method="post">
+                <label for="user_id">Выберите сотрудника</label>
+                <select name="user_id">
+                    {% for item in user_list %}
+                        <option>{{ item[1] }} {{ item[2] }}</option>
+                    {% endfor %}
+                </select>
+                <label for="date">Укажите дату</label>
+                <input name="date" type="date">
+
+                <label for="date">Укажите длительность робочего дня</label>
+                <input name="dur" type="number">
+                <p style="text-align:center; font-size: 13px; color:gray;">*указывается в часах</p>
+
+                <button type="submit">Добавить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
