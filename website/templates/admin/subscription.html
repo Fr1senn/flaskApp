@@ -1,0 +1,27 @@
+{% extends 'admin/admin_base.html' %}
+{% block title %}Абонементы{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <h2>Абонементы</h2>
+            <hr>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Длительность действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in subs_list %}
+                    <tr>
+                        <th><a href="{{ url_for('crud.subs_crud', subs_id=item[0]) }}">{{ item[0] }}</a></th>
+                        <th>{{ item[1] }}</th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <a href="{{ url_for('crud.subs_crud_add') }}">Добавить новую запись</a>
+        </div>
+    </div>
+{% endblock %}

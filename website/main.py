@@ -47,7 +47,7 @@ def subscription():
         SELECT title FROM subscription;
     ''', user=session['email'].split('@')[0], password=session['password'])
     subs_duration_list = connect_and_select('''
-        SELECT duration FROM subscription_duration;
+        SELECT duration FROM subscription_duration WHERE id != 0;
     ''', user=session['email'].split('@')[0], password=session['password'])
     if request.method == 'POST':
         if str(request.form.get('sub')) == '---':

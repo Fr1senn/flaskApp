@@ -49,8 +49,10 @@ def create_app():
     from .main import main
     from .admin import admin
     from .profile import profile
+    from .crud import crud
 
     app.register_blueprint(admin, url_prefix='/admin')
+    app.register_blueprint(crud, url_prefix='/admin/crud')
     app.register_blueprint(profile, url_prefix='/profile')
     app.register_blueprint(main, url_prefix='/')
     return app

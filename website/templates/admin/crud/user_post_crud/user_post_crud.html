@@ -3,11 +3,13 @@
 {% block content %}
     <div class="content">
         <div class="container">
-        {{ post_list }}
+
+            <h2>{{ user_list[0][1] }} {{ user_list[0][2] }}</h2>
+            <hr>
             <form method="post">
                 <select name="status_id">
                     {% for item in post_list %}
-                        {% if item[0] == user_post_list[0][2]  %}
+                        {% if item[0] == user_post_list[0][2] %}
                             <option selected>{{ item[1] }}</option>
                         {% else %}
                             <option>{{ item[1] }}</option>

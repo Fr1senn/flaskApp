@@ -18,7 +18,7 @@
                 <tbody>
                 {% for item in user_post %}
                     <tr>
-                        <th><a href="{{ url_for('admin.user_post_crud', user_post_id=item[0]) }}">{{ item[0] }}</a></th>
+                        <th><a href="{{ url_for('crud.user_post_crud', user_post_id=item[0]) }}">{{ item[0] }}</a></th>
                         <th>{{ item[1] }} {{ item[2] }}</th>
                         <th>{{ item[3].strftime('%Y-%m-%d') }}</th>
                         <th>{{ item[4] }} грн.</th>
@@ -27,6 +27,7 @@
                 {% endfor %}
                 </tbody>
             </table>
+        <a href="{{ url_for('crud.user_post_crud_add') }}">Добавить новую запись</a>
         </div>
     </div>
 {% endblock %}
