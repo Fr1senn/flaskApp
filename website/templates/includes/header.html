@@ -18,7 +18,7 @@
                 </li>
             </ul>
             <!-- MENU ENDS -->
-            {% if session['logged_in'] %}
+            {% if session['logged_in'] and session['status'] != 'Гость' %}
                 <div class="btn_wrapper">
                     <a href="{{ url_for('profile.home') }}" class="btn">Кабинет</a>
                     <a href="{{ url_for('main.logout') }}" class="btn">Выход</a>
