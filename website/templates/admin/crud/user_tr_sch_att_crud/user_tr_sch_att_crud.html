@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <form method="post">
+            {{ stat }}
+                <label for="user_id">Выберите пользователя</label>
+                <select name="user_id">
+                    {% for item in user_list %}
+                        {% if item[0] == user_tr_sch_att_list[0][1] %}
+                            <option selected>{{ item[1] }} {{ item[2] }}</option>
+                        {% else %}
+                            <option>{{ item[1] }} {{ item[2] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <label for="date">Укажите дату</label>
+                <input type="date" name="date" value="{{ user_tr_sch_att_list[0][2] }}">
+                <label for="duration">Укажите дату</label>
+                <input type="text" name="duration" value="{{ user_tr_sch_att_list[0][3] }}">
+                <label for="status_id">Выберите статус</label>
+                <select name="status_id">
+                    {% for item in status_list %}
+                        {% if item[0] == user_tr_sch_att_list[0][4] %}
+                            <option selected>{{ item[1] }}</option>
+                        {% else %}
+                            <option>{{ item[1] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <label for="action">Выберите действие</label>
+                <select name="action">
+                    <option>Удалить</option>
+                    <option>Изменить</option>
+                </select>
+                <button type="submit">Подтвердить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
