@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Популярность абонементов{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <h2>Популярность абонементов</h2>
+            <hr>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Абонемент</th>
+                    <th>Востребованность</th>
+                    <th>Востребованность по средней продолжительности</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in rank %}
+                    <tr>
+                        <th>{{ item[0] }}</th>
+                        <th>{{ item[1] }}</th>
+                        <th>{{ item[2] }}</th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

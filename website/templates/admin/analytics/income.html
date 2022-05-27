@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Доход{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <h2>Ежемесячный доход</h2>
+            <hr>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Месяц</th>
+                    <th>Доход за месяц</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in income %}
+                    <tr>
+                        <th>{{ item[0] }}</th>
+                        <th>{{ item[1] }} грн.</th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
