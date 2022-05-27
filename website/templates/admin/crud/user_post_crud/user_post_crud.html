@@ -5,6 +5,15 @@
         <div class="container">
             <h2>{{ user_list[0][1] }} {{ user_list[0][2] }}</h2>
             <hr>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    {% if category =='error' %}
+                        <div class="msg_spot_err">
+                            <h6>{{ message }}</h6>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
             <form method="post">
                 <select name="status_id">
                     {% for item in post_list %}

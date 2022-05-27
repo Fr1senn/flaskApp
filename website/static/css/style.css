@@ -68,7 +68,7 @@ html {
     flex-grow: 1;
 }
 
-.msg_spot_err{
+.msg_spot_err {
     width: 25%;
     margin: 10px auto;
     border: 1px solid black;
@@ -76,7 +76,7 @@ html {
     background-color: darkred;
 }
 
-.msg_spot_err h6{
+.msg_spot_err h6 {
     font-size: 18px;
     text-align: center;
 }
@@ -165,6 +165,34 @@ html {
 }
 
 /* SLIDER ENDS */
+
+/* SCHEDULE BEGIN */
+.schedule {
+    margin: 120px 0;
+    background: rgb(0,0,0);
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(144,238,144,1) 50%);
+}
+
+.schedule_inner{
+    padding: 30px 0;
+}
+
+/* SCHEDULE ENDS */
+
+/* TEAM BEGIN */
+.team_inner{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.team_item{
+    margin: 15px;
+    border: 2px solid black;
+    border-radius: 5px;
+    width: 30%;
+}
+/* TEAM ENDS */
 
 /* FOOTER BEGIN */
 
@@ -464,6 +492,10 @@ input::placeholder {
 
 /* ADMIN-PAGE BEGIN */
 
+.admin {
+    display: flex;
+}
+
 .admin-link_wrapper {
     border-right: 2px solid black;
     width: 25%;
@@ -483,10 +515,17 @@ input::placeholder {
     padding: 3px 5px;
 }
 
-.admin-link:hover{
+.admin-link:hover {
     color: white;
     background-color: black;
     transition: .2s;
 }
+
+/* ANALYTICS BEGIN */
+.analytics_wrapper {
+    width: 75%;
+}
+
+/* ANALYTICS END */
 
 /* ADMIN-PAGE ENDS*/

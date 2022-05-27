@@ -11,7 +11,30 @@ admin = Blueprint('admin', __name__)
 def home():
     if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
         return redirect(url_for('main.home'))
-    return render_template('admin/admin_base.html')
+    total_inc = connect_and_select(f'''
+        WITH month_list AS(
+            SELECT ml FROM generate_series(1, 12) AS ml),
+        d AS(
+            SELECT DISTINCT ml,
+            SUM(COALESCE(price, 0)) OVER(PARTITION BY ml) AS monthly_income
+            FROM month_list
+            LEFT JOIN user_subscription_duration ON ml = EXTRACT(MONTH FROM date)
+            ORDER BY ml)
+        SELECT SUM(monthly_income) FROM d;
+    ''', user=session['username'], password=session['password'])
+    rank = connect_and_select(f'''
+        WITH d AS(
+            SELECT *
+            FROM user_subscription_duration
+            JOIN subscription ON subscription.id = subscription_id
+            JOIN subscription_duration ON subscription_duration.id = subscription_duration_id)
+        SELECT title,
+        DENSE_RANK() OVER(ORDER BY COUNT(user_id) DESC) AS pop_subs,
+        DENSE_RANK() OVER(ORDER BY AVG(duration) DESC) AS avg_dur
+        FROM d
+        GROUP BY title LIMIT 1;
+    ''', user=session['username'], password=session['password'])
+    return render_template('admin/admin_base.html', total_inc=total_inc, pop_sub=rank)
 
 
 @admin.route('/users')
@@ -22,6 +45,7 @@ def users():
         SELECT public.user.id, first_name, last_name, username, birthday, registration_date, title
         FROM public.user
         JOIN status ON status.id = status_id
+        WHERE public.user.id != 0
         ORDER BY public.user.id;
     ''', user=session['username'], password=session['password'])
     return render_template('admin/users.html', users=user_list)

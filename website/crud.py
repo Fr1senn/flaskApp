@@ -15,7 +15,7 @@ status = {
 
 @crud.route('/users/<int:user_id>', methods=['POST', 'GET'])
 def user_crud(user_id):
-    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+    if session['status'] not in ['Администратор', 'Управляющий']:
         return redirect(url_for('main.home'))
     user = connect_and_select(f'''
         SELECT *
@@ -47,7 +47,7 @@ def user_crud(user_id):
 
 @crud.route('/users/add', methods=['POST', 'GET'])
 def user_crud_add():
-    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+    if session['status'] not in ['Администратор', 'Управляющий']:
         return redirect(url_for('main.home'))
     status_list = connect_and_select('''SELECT title FROM status''')
     if request.method == 'POST':
@@ -83,7 +83,7 @@ def user_crud_add():
 
 @crud.route('/user_post/<int:user_post_id>', methods=['POST', 'GET'])
 def user_post_crud(user_post_id):
-    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+    if session['status'] not in ['Управляющий']:
         return redirect(url_for('main.home'))
     user_list = connect_and_select(f'''
         SELECT public.user.id, first_name, last_name, title, status_id
@@ -101,6 +101,9 @@ def user_post_crud(user_post_id):
         JOIN user_post ON user_id = public.user.id
         WHERE user_post.id = {user_post_id}''', user=session['username'], password=session['password'])
     if request.method == 'POST':
+        if int(request.form['salary']) <= 0:
+            flash('Зарплата не может быть отрицательной или равна нулю!', category='error')
+            return redirect(url_for('crud.user_post_crud', user_post_id=user_post_id))
         if request.form['action'] == 'Удалить':
             connect_and_iud(f'''DELETE FROM user_post WHERE id = {user_post_id}''', user=session['username'],
                             password=session['password'])
@@ -120,12 +123,12 @@ def user_post_crud(user_post_id):
 
 @crud.route('/user_post/add', methods=['POST', 'GET'])
 def user_post_crud_add():
-    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+    if session['status'] not in ['Управляющий']:
         return redirect(url_for('main.home'))
     user_list = connect_and_select('''
         SELECT public.user.id, first_name, last_name
         FROM public.user
-        WHERE status_id = 4;
+        WHERE status_id = 4 AND public.user.id != 0;
     ''', user=session['username'], password=session['password'])
     status_list = connect_and_select('''
         SELECT id, title
@@ -133,6 +136,9 @@ def user_post_crud_add():
         WHERE id != 4;
     ''', user=session['username'], password=session['password'])
     if request.method == 'POST':
+        if int(request.form['salary']) <= 0:
+            flash('Зарплата не может быть отрицательной или равна нулю', category='error')
+            return redirect(url_for('crud.user_post_crud_add'))
         user_dict = {}
         status_dict = {}
         for item in user_list:
@@ -151,7 +157,7 @@ def user_post_crud_add():
 
 @crud.route('subscription_duraion/<int:subs_dur_id>', methods=['POST', 'GET'])
 def subs_dur_crud(subs_dur_id):
-    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+    if session['status'] not in ['Управляющий']:
         return redirect(url_for('main.home'))
     subs_dur = connect_and_select(f'''SELECT * FROM subscription_duration WHERE id = {subs_dur_id};''',
                                   user=session['username'], password=session['password'])
@@ -170,7 +176,7 @@ def subs_dur_crud(subs_dur_id):
 
 @crud.route('subscription_duraion/add', methods=['POST', 'GET'])
 def subs_dur_crud_add():
-    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+    if session['status'] not in ['Управляющий']:
         return redirect(url_for('main.home'))
     if request.method == 'POST':
         connect_and_iud(f'''
@@ -182,36 +188,45 @@ def subs_dur_crud_add():
 
 @crud.route('subscription/<int:subs_id>', methods=['POST', 'GET'])
 def subs_crud(subs_id):
-    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+    if session['status'] not in ['Управляющий']:
         return redirect(url_for('main.home'))
     subs = connect_and_select(f'''SELECT * FROM subscription WHERE id = {subs_id};''',
                               user=session['username'], password=session['password'])
     if request.method == 'POST':
+        if int(request.form['price']) <= 0:
+            flash('Цена не можеть быть отрицательной или равна нулю!', category='error')
+            return redirect(url_for('crud.subs_crud', subs_id=subs_id))
         if request.form['action'] == 'Удалить':
             connect_and_iud(f'''DELETE FROM subscription WHERE id = {subs_id}''', user=session['username'],
                             password=session['password'])
             return redirect(url_for('admin.subscription'))
         if request.form['action'] == 'Изменить':
-            connect_and_iud(f'''UPDATE subscription SET title = '{request.form['subs']}' WHERE id = {subs_id}''',
-                            user=session['username'], password=session['password'])
+            connect_and_iud(f'''
+                UPDATE subscription SET title = '{request.form['subs']}' WHERE id = {subs_id};
+                UPDATE subscription SET price_per_day = {request.form['price']} WHERE id = {subs_id};
+            ''', user=session['username'], password=session['password'])
             return redirect(url_for('admin.subscription'))
     return render_template('admin/crud/subs_crud/subs_crud.html', subs=subs)
 
 
 @crud.route('subscription/add/', methods=['POST', 'GET'])
 def subs_crud_add():
-    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+    if session['status'] not in ['Управляющий']:
         return redirect(url_for('main.home'))
     if request.method == 'POST':
-        connect_and_iud(f'''INSERT INTO subscription(title) VALUES('{request.form['subs']}')''',
-                        user=session['username'], password=session['password'])
+        if int(request.form['price']) <= 0:
+            flash('Цена не можеть быть отрицательной или равна нулю!', category='error')
+            return redirect(url_for('crud.subs_crud_add'))
+        connect_and_iud(f'''
+            INSERT INTO subscription(title, price_per_day) VALUES('{request.form['subs']}', {request.form['price']});
+        ''', user=session['username'], password=session['password'])
         return redirect(url_for('admin.subscription'))
     return render_template('admin/crud/subs_crud/subs_crud_add.html')
 
 
 @crud.route('user_schedule/<int:user_schedule_id>', methods=['POST', 'GET'])
 def user_schedule_crud(user_schedule_id):
-    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+    if session['status'] not in ['Управляющий']:
         return redirect(url_for('main.home'))
     user_schedule_list = connect_and_select(f'''
         SELECT public.user.id, user_schedule.id, schedule.id, first_name, last_name, date, duration
@@ -237,7 +252,7 @@ def user_schedule_crud(user_schedule_id):
 
 @crud.route('user_schedule/add', methods=['POST', 'GET'])
 def user_schedule_crud_add():
-    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+    if session['status'] not in ['Управляющий']:
         return redirect(url_for('main.home'))
     user_list = connect_and_select(f'''
         SELECT public.user.id, first_name, last_name
@@ -265,7 +280,7 @@ def user_schedule_crud_add():
 
 @crud.route('user_progess/<int:user_id>', methods=['POST', 'GET'])
 def user_progress_crud(user_id):
-    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+    if session['status'] not in ['Тренер']:
         return redirect(url_for('main.home'))
     user_list = connect_and_select(f'''
         SELECT DISTINCT public.user.id, unit_id, first_name, last_name,
@@ -304,13 +319,14 @@ def user_progress_crud(user_id):
 
 @crud.route('/user_training_schedule_attendance/<int:user_tr_sch_att_id>', methods=['GET', 'POST'])
 def user_tr_sch_att_crud(user_tr_sch_att_id):
-    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+    if session['status'] not in ['Тренер', 'Администратор']:
         return redirect(url_for('main.home'))
     user_list = connect_and_select('''
             SELECT public.user.id, first_name, last_name
             FROM public.user WHERE id != 0;
         ''', user=session['username'], password=session['password'])
-    status_list = connect_and_select('''SELECT * FROM attendance_status''', user=session['username'], password=session['password'])
+    status_list = connect_and_select('''SELECT * FROM attendance_status''', user=session['username'],
+                                     password=session['password'])
     user_tr_sch_att_list = connect_and_select(f'''
         SELECT user_training_schedule_attendance.id, user_id, date, duration, status_id
         FROM user_training_schedule_attendance
@@ -330,28 +346,31 @@ def user_tr_sch_att_crud(user_tr_sch_att_id):
                 user_dict[' '.join([item[1], item[2]])] = item[0]
             status_dict = {}
             for item in status_list:
-                status_dict[item[1].strip()] = item[0]
-            connect_and_iud(f'''
-                UPDATE user_training_schedule_attendance SET user_id = {user_dict[request.form['user_id']]}
-                WHERE id = {user_tr_sch_att_id};
-                UPDATE training_schedule SET date = '{request.form['date']}'
-                WHERE id IN (SELECT training_schedule_id FROM user_training_schedule_attendance WHERE id = {user_tr_sch_att_id});
-                UPDATE training_schedule SET duration = '{request.form['duration']} hours'
-                WHERE id IN (SELECT training_schedule_id FROM user_training_schedule_attendance WHERE id = {user_tr_sch_att_id});
-                UPDATE user_training_schedule_attendance SET status_id = {status_dict[request.form['status_id']]}
-                WHERE id = {user_tr_sch_att_id};
-            ''', user=session['username'], password=session['password'])
+                status_dict[item[1]] = item[0]
+            if session['status'] == 'Тренер':
+                connect_and_iud(f'''
+                    UPDATE user_training_schedule_attendance SET user_id = {user_dict[request.form['user_id']]}
+                    WHERE id = {user_tr_sch_att_id};
+                    UPDATE training_schedule SET date = '{request.form['date']}'
+                    WHERE id IN (SELECT training_schedule_id FROM user_training_schedule_attendance WHERE id = {user_tr_sch_att_id});
+                    UPDATE training_schedule SET duration = '{request.form['duration']} hours'
+                    WHERE id IN (SELECT training_schedule_id FROM user_training_schedule_attendance WHERE id = {user_tr_sch_att_id});
+                    UPDATE user_training_schedule_attendance SET status_id = {status_dict[request.form['status_id']]}
+                    WHERE id = {user_tr_sch_att_id};
+                ''', user=session['username'], password=session['password'])
+            if session['status'] == 'Администратор':
+                connect_and_iud(f'''
+                    UPDATE user_training_schedule_attendance SET status_id = {status_dict[request.form['status_id']]}
+                    WHERE id = {user_tr_sch_att_id};
+                ''', user=session['username'], password=session['password'])
             return redirect(url_for('admin.user_training_schedule_attendance'))
-    status_dict = {}
-    for item in status_list:
-        status_dict[item[1]] = item[0]
     return render_template('admin/crud/user_tr_sch_att_crud/user_tr_sch_att_crud.html', user_list=user_list,
-                           user_tr_sch_att_list=user_tr_sch_att_list, status_list=status_list, stat=status_dict)
+                           user_tr_sch_att_list=user_tr_sch_att_list, status_list=status_list)
 
 
 @crud.route('/user_training_schedule_attendance.html', methods=['POST', 'GET'])
 def user_tr_sch_att_crud_add():
-    if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
+    if session['status'] not in ['Тренер', 'Администратор']:
         return redirect(url_for('main.home'))
     user_list = connect_and_select('''
         SELECT public.user.id, first_name, last_name

@@ -6,14 +6,16 @@
         <thead>
         <tr>
             <th>Инициалы</th>
-            <th>Время посещения</th>
+            <th>Дата посещения</th>
+            <th>Статус</th>
         </tr>
         </thead>
         <tbody>
         {% for item in attendance_list %}
         <tr>
-            <th>{{ item[0] }} {{ item[1] }}</th>
-            <th>{{ item[2] }}</th>
+            <th>{{ item[1] }} {{ item[2] }}</th>
+            <th>{{ item[3] }}</th>
+            <th>{{ item[4] }}</th>
         </tr>
         {% endfor %}
         </tbody>

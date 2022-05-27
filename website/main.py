@@ -15,7 +15,13 @@ env.read_env()
 
 @main.route('/')
 def home():
-    return render_template('index.html')
+    user_list = connect_and_select('''
+        SELECT first_name, last_name, title
+        FROM public.user
+        JOIN status ON status.id = status_id
+        WHERE status_id = 1 OR status_id = 2;
+    ''')
+    return render_template('index.html', user_list=user_list)
 
 
 @main.route('/reviews', methods=['GET', 'POST'])
@@ -40,10 +46,12 @@ def reviews():
 @main.route('/subscription', methods=['GET', 'POST'])
 def subscription():
     subs_list = connect_and_select('''
-        SELECT title FROM subscription;
+        SELECT *
+        FROM subscription
+        WHERE id != 0;
     ''')
     subs_duration_list = connect_and_select('''
-        SELECT duration FROM subscription_duration WHERE id != 0;
+        SELECT * FROM subscription_duration WHERE id != 0;
     ''')
     if request.method == 'POST':
         if not session['logged_in']:
@@ -55,20 +63,17 @@ def subscription():
             flash('Необходимо выбрать длительность абонемента!', category='error')
             return redirect(url_for('main.subscription'))
         else:
-            sub_id = connect_and_select(f'''
-                SELECT id FROM subscription WHERE title = '{request.form.get('sub')}'
+            subs_dict = {}
+            subs_dur_dict = {}
+            price = float(request.form['sub'].split()[1]) * int(request.form['sub_duration'].split(',')[0].split()[0])
+            for item in subs_list:
+                subs_dict[item[1]] = item[0]
+            for item in subs_duration_list:
+                subs_dur_dict[str(item[1])] = item[0]
+            connect_and_iud(f'''
+                INSERT INTO user_subscription_duration(price, user_id, subscription_id, subscription_duration_id)
+                VALUES({price}, {session['user_id']}, {subs_dict[request.form['sub'].split()[0]]}, {subs_dur_dict[request.form['sub_duration']]})
             ''', user=session['username'], password=session['password'])
-            sub_dur_id = connect_and_select(f'''
-                SELECT id FROM subscription_duration WHERE duration = '{request.form.get('sub_duration')}'
-            ''', user=session['username'], password=session['password'])
-            user_subs_dur = models.UserSubscriptionDuration(user_id=session['user_id'],
-                                                            subscription_id=sub_id[0],
-                                                            subscription_duration_id=sub_dur_id[0],
-                                                            price=len(str(request.form.get('sub'))) * int(
-                                                                request.form.get('sub_duration').split(',')[0].split(
-                                                                    ' ')[0]))
-            db.session.add(user_subs_dur)
-            db.session.commit()
             return redirect(url_for('profile.home'))
     return render_template('subscriptions.html', subs=subs_list, subs_dur=subs_duration_list)
 

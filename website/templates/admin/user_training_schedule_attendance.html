@@ -5,7 +5,9 @@
         <div class="container">
             <h2>График тренировок пользователей</h2>
             <hr>
-            <a href="{{ url_for('crud.user_tr_sch_att_crud_add') }}">Добавить новую запись</a>
+            {% if session['status'] in ['Тренер'] %}
+                <a href="{{ url_for('crud.user_tr_sch_att_crud_add') }}">Добавить новую запись</a>
+            {% endif %}
             <table class="table">
                 <thead>
                 <tr>
@@ -19,7 +21,13 @@
                 <tbody>
                 {% for item in user_training_schedule_attendance %}
                     <tr>
-                        <th><a href="{{ url_for('crud.user_tr_sch_att_crud', user_tr_sch_att_id=item[0]) }}">{{ item[0] }}</a></th>
+                        {% if session['status'] in ['Тренер', 'Администратор'] %}
+                            <th>
+                                <a href="{{ url_for('crud.user_tr_sch_att_crud', user_tr_sch_att_id=item[0]) }}">{{ item[0] }}</a>
+                            </th>
+                        {% else %}
+                            <th>{{ item[0] }}</th>
+                        {% endif %}
                         <th>{{ item[1] }} {{ item[2] }}</th>
                         <th>{{ item[3] }}</th>
                         <th>{{ item[4] }}</th>

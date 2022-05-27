@@ -3,16 +3,35 @@
 {% block content %}
     <div class="content">
         <div class="container">
-            <div class="admin-link_wrapper">
-                <a class="admin-link" href="{{ url_for('admin.users') }}">Пользователи</a>
-                <a class="admin-link" href="{{ url_for('admin.user_progress') }}">Прогресс пользователей</a>
-                <a class="admin-link" href="{{ url_for('admin.user_subscription_duration') }}">Покупки пользователей</a>
-                <a class="admin-link" href="{{ url_for('admin.user_training_schedule_attendance') }}">График тренировок пользователей</a>
-                <a class="admin-link" href="{{ url_for('admin.reviews') }}">Отзывы</a>
-                <a class="admin-link" href="{{ url_for('admin.user_schedule') }}">Расписание сотдруников</a>
-                <a class="admin-link" href="{{ url_for('admin.user_post') }}">Должности сотдруников</a>
-                <a class="admin-link" href="{{ url_for('admin.subscription_duration') }}">Длительность абонементов</a>
-                <a class="admin-link" href="{{ url_for('admin.subscription') }}">Абонементы</a>
+            <div class="admin">
+                <div class="admin-link_wrapper">
+                    <a class="admin-link" href="{{ url_for('admin.users') }}">Пользователи</a>
+                    <a class="admin-link" href="{{ url_for('admin.user_progress') }}">Прогресс пользователей</a>
+                    <a class="admin-link" href="{{ url_for('admin.user_subscription_duration') }}">Покупки
+                        пользователей</a>
+                    <a class="admin-link" href="{{ url_for('admin.user_training_schedule_attendance') }}">График
+                        тренировок пользователей</a>
+                    <a class="admin-link" href="{{ url_for('admin.reviews') }}">Отзывы</a>
+                    <a class="admin-link" href="{{ url_for('admin.user_schedule') }}">Расписание сотдруников</a>
+                    <a class="admin-link" href="{{ url_for('admin.user_post') }}">Должности сотдруников</a>
+                    <a class="admin-link" href="{{ url_for('admin.subscription_duration') }}">Длительность
+                        абонементов</a>
+                    <a class="admin-link" href="{{ url_for('admin.subscription') }}">Абонементы</a>
+                </div>
+                <div class="analytics_wrapper">
+                    {% if session['status'] in ['Управляющий'] %}
+                        <h2>Общий доход:</h2>
+                        <h3 style="text-align:center; margin: 5px;">{{ total_inc[0][0] }} грн.</h3>
+                        <a style=" display:block; text-align:center;"
+                           href="{{ url_for('analytics.income') }}">Подробнее</a>
+                        <hr>
+                        <h2>Популярный абонемент:</h2>
+                        <h3 style="text-align:center; margin: 5px;">{{ pop_sub[0][0] }}</h3>
+                        <a style=" display:block; text-align:center;"
+                           href="{{ url_for('analytics.subs_rank') }}">Подробнее</a>
+                        <hr>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

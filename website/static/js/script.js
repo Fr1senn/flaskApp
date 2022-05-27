@@ -4,10 +4,13 @@ $('.slider_inner').slick({
     arrows: false,
 });
 
+
+
 $('.subscription_item form button:button').click(function () {
-    let sub = $('#sub').val().toString().length;
-    let sub_dur = $('#sub_dur').val().toString();
-    let price = parseInt(sub_dur.split(',')[0].split(' ')[0]) * sub;
+
+    let sub = parseFloat($('#sub').val().split(' ')[1]);
+    let sub_dur = parseInt($('#sub_dur').val().split(',')[0].split(' ')[0])
+    let price = sub * sub_dur;
     if (isNaN(price)) {
         alert('Необходимо авторизоваться!');
     } else {

@@ -48,10 +48,11 @@ def attendance():
             FROM get_user_info('{session['username']}')
         ''', user=session['username'], password=session['password'])
     attendance_list = connect_and_select(f'''
-        SELECT first_name, last_name, attendance
+        SELECT user_training_schedule_attendance.id, first_name, last_name, date, status
         FROM public.user
-        JOIN user_training_schedule_attendance ON user_training_schedule_attendance.user_id = public.user.id
-        JOIN attendance ON attendance.id = attendance_id
+        JOIN user_training_schedule_attendance ON user_id = public.user.id
+        JOIN attendance_status ON attendance_status.id = user_training_schedule_attendance.status_id
+        JOIN training_schedule ON training_schedule.id = training_schedule_id
         WHERE username = '{session['username']}';
     ''', user=session['username'], password=session['password'])
     return render_template('profile/attendance.html', user=user, attendance_list=attendance_list)

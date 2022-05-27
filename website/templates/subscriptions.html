@@ -17,7 +17,6 @@
                         {% endif %}
                     {% endfor %}
                 {% endwith %}
-                {{ curr }}
                 <div class="subscriptions_inner">
                     <div class="subscription_item">
                         <p class="subs_title"></p>
@@ -26,14 +25,15 @@
                             <select name="sub" id="sub">
                                 <option>---</option>
                                 {% for sub in subs %}
-                                    <option>{{ sub[0] }}</option>
+                                    <option>{{ sub[1] }} {{ sub[2] }} грн.</option>
                                 {% endfor %}
                             </select>
+                            <p style="text-align:center; font-size: 13px; color:gray;">*указана цена за одну тренировку</p>
                             <label for="sub_duration">Выберете длительность абонемента</label>
                             <select name="sub_duration" id="sub_dur">
                                 <option>---</option>
                                 {% for sub_dur in subs_dur %}
-                                    <option>{{ sub_dur[0] }}</option>
+                                    <option>{{ sub_dur[1] }}</option>
                                 {% endfor %}
                             </select>
                             <button type="submit">Приобрести</button>

@@ -23,6 +23,33 @@
             </div>
         </section>
         <!-- SLIDER ENDS -->
+        <section class="schedule">
+            <div class="container">
+                <div class="schedule_inner">
+                    <h2>Расписание</h2>
+                    <p style="text-align:center; font-size: 18px; margin: 10px 0;">График работы клуба:</p>
+                    <p style="text-align:center; font-size: 18px; margin: 10px 0;">ПН.- ПТ. : 08:00 - 22:00</p>
+                    <p style="text-align:center; font-size: 18px; margin: 10px 0;">СБ.- ВС. : 09:00 - 22:00</p>
+                </div>
+            </div>
+        </section>
 
+        <section class="team">
+            <div class="container">
+                <h2>Наша команда</h2>
+                <hr>
+                <div class="team_inner">
+                    {% for item in user_list %}
+                        <div class="team_item">
+                            <div class="team_img-wrapp">
+                                <img style="width: 50%; height: 50%; display:block; margin: 10px auto;" src="{{ url_for('static', filename='images/coach_icon.svg') }}" alt="">
+                            </div>
+                            <h3 style="text-align:center;">{{ item[0] }} {{ item[1] }}</h3>
+                            <h3 style="text-align:center;">{{ item[2] }}</h3>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
     </div>
 {% endblock %}
