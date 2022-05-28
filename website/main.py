@@ -1,11 +1,8 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from environ import Env
 from datetime import datetime
-import psycopg2 as pg
 
 from . import connect_and_select, connect_and_iud
-from . import models as models
-from . import db
 
 main = Blueprint('main', __name__)
 
@@ -89,8 +86,15 @@ def login():
             JOIN status ON status.id = status_id
             WHERE username = '{username}';
         ''')
+        username_list = [item[0] for item in connect_and_select('''SELECT username FROM public.user''')]
         if user is None:
             flash('Пользователь не сущесвует!', category='error')
+            return redirect(url_for('main.login'))
+        if username not in username_list:
+            flash('Неверный логин!', category='error')
+            return redirect(url_for('main.login'))
+        if password not in psw_list:
+            flash('Неверный пароль!', category='error')
             return redirect(url_for('main.login'))
         session['logged_in'] = True
         session['username'] = username
@@ -98,7 +102,6 @@ def login():
         session['user_id'] = user[0][0]
         session['status'] = user[0][1]
         return redirect(url_for('main.home'))
-
     return render_template('login.html')
 
 
@@ -110,6 +113,9 @@ def logout():
     session.pop('password')
     session.pop('user_id')
     return redirect(url_for('main.login'))
+
+
+psw_list = ['russel', 'toto', 'zhukov', 'barshova']
 
 
 @main.route('/registration', methods=['GET', 'POST'])
@@ -149,5 +155,6 @@ def registration():
                 VALUES('{first_name}', '{last_name}', '{username}', '{birthday}', '{request.form['email']}');
             ''')
             connect_and_iud(f'''GRANT authenticated_user TO {username}''')
+            psw_list.append(password)
             return redirect(url_for('main.login'))
     return render_template('registration.html')

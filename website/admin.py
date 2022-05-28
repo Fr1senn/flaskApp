@@ -72,7 +72,9 @@ def user_progress():
         FROM public.user
         JOIN user_progress ON user_id = public.user.id
         JOIN unit ON unit.id = unit_id
-        ORDER BY public.user.id''', user=session['username'], password=session['password'])
+        WHERE public.user.id != 0
+        ORDER BY public.user.id;
+    ''', user=session['username'], password=session['password'])
     return render_template('admin/user_progress.html', user_progress=user_progress_list)
 
 

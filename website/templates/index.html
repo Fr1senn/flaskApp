@@ -42,7 +42,8 @@
                     {% for item in user_list %}
                         <div class="team_item">
                             <div class="team_img-wrapp">
-                                <img style="width: 50%; height: 50%; display:block; margin: 10px auto;" src="{{ url_for('static', filename='images/coach_icon.svg') }}" alt="">
+                                <img style="width: 50%; height: 50%; display:block; margin: 10px auto;"
+                                     src="{{ url_for('static', filename='images/coach_icon.svg') }}" alt="">
                             </div>
                             <h3 style="text-align:center;">{{ item[0] }} {{ item[1] }}</h3>
                             <h3 style="text-align:center;">{{ item[2] }}</h3>

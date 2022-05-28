@@ -101,7 +101,7 @@ def user_post_crud(user_post_id):
         JOIN user_post ON user_id = public.user.id
         WHERE user_post.id = {user_post_id}''', user=session['username'], password=session['password'])
     if request.method == 'POST':
-        if int(request.form['salary']) <= 0:
+        if float(request.form['salary']) <= 0:
             flash('Зарплата не может быть отрицательной или равна нулю!', category='error')
             return redirect(url_for('crud.user_post_crud', user_post_id=user_post_id))
         if request.form['action'] == 'Удалить':
@@ -136,7 +136,7 @@ def user_post_crud_add():
         WHERE id != 4;
     ''', user=session['username'], password=session['password'])
     if request.method == 'POST':
-        if int(request.form['salary']) <= 0:
+        if float(request.form['salary']) <= 0:
             flash('Зарплата не может быть отрицательной или равна нулю', category='error')
             return redirect(url_for('crud.user_post_crud_add'))
         user_dict = {}
