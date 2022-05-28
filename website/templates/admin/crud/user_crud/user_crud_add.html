@@ -10,16 +10,28 @@
                 <label for="last_name">Введите фамилию</label>
                 <input name="last_name" type="text">
 
-                <label for="username">Введите email</label>
-                <input name="username" type="email">
+                <label for="email">Введите email</label>
+                <input name="email" type="email">
+
+                <label for="username">Введите имя пользователя</label>
+                <input name="username" type="text">
 
                 <label for="birthday">Введите дату рождения</label>
                 <input name="birthday" type="date">
 
+                <label for="password">Введите пароль</label>
+                <input type="password" name="password">
+
+
                 <label style="text-align:center; display: block" for="status">Выберите статус</label>
                 <select name="status">
                     {% for item in status_list %}
-                        <option>{{ item[0] }}</option>
+                        {% if session['status'] == 'Управляющий' and item[0] != 'Клиент' %}
+                            <option>{{ item[0]|e }}</option>
+                        {% endif %}
+                        {% if session['status'] == 'Администратор' and item[0] == 'Клиент' %}
+                            <option>{{ item[0]|e }}</option>
+                        {% endif %}
                     {% endfor %}
                 </select>
 

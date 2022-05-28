@@ -29,12 +29,13 @@ def purchases():
             FROM get_user_info('{session['username']}')
         ''', user=session['username'], password=session['password'])
     purchase_list = connect_and_select(f'''
-           SELECT first_name, last_name, price, date, title, duration
-           FROM public.user
-           JOIN user_subscription_duration ON user_id = public.user.id
-           JOIN subscription ON subscription.id = subscription_id
-           JOIN subscription_duration ON subscription_duration.id = subscription_duration_id
-           WHERE username = '{session['username']}';
+            SELECT first_name, last_name, price, title, duration, date,
+            (date + duration)::DATE AS end_of_subscription
+            FROM public.user
+            JOIN user_subscription_duration ON user_id = public.user.id
+            JOIN subscription ON subscription.id = subscription_id
+            JOIN subscription_duration ON subscription_duration.id = subscription_duration_id
+            WHERE username = '{session['username']}';
        ''', user=session['username'], password=session['password'])
     return render_template('profile/purchases.html', user=user, purchase_list=purchase_list)
 

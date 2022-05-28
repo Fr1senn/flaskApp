@@ -2,6 +2,7 @@ from flask import Blueprint, redirect, render_template, session, request, url_fo
 import psycopg2 as pg
 
 from website import connect_and_select, connect_and_iud
+from .main import psw_list
 
 crud = Blueprint('crud', __name__)
 
@@ -52,11 +53,11 @@ def user_crud_add():
     status_list = connect_and_select('''SELECT title FROM status''')
     if request.method == 'POST':
         connect_and_iud(f'''
-            INSERT INTO public.user(first_name, last_name, username, birthday, status_id)
-            VALUES('{request.form['first_name']}', '{request.form['last_name']}', '{request.form['username']}', '{request.form['birthday']}', {status[request.form['status']]})
+            INSERT INTO public.user(first_name, last_name, username, email, birthday, status_id)
+            VALUES('{request.form['first_name']}', '{request.form['last_name']}', '{request.form['username']}', '{request.form['email']}', '{request.form['birthday']}', {status[request.form['status']]})
         ''')
         connect_and_iud(f'''
-            CREATE ROLE {request.form['username']} WITH LOGIN PASSWORD '{request.form['username']}';
+            CREATE ROLE {request.form['username']} WITH LOGIN PASSWORD '{request.form['password']}';
         ''')
         if request.form['status'] == 'Клиент':
             connect_and_iud(f'''
@@ -75,8 +76,9 @@ def user_crud_add():
                 GRANT manager TO {request.form['username']}
             ''')
         flash(
-            f"Пользователь успешно создан! Данные для входа {request.form['username']} | {request.form['username']}",
+            f"Пользователь успешно создан! Данные для входа {request.form['username']} | {request.form['password']}",
             category='error')
+        psw_list.append(request.form['password'])
         return redirect(url_for('admin.users'))
     return render_template('admin/crud/user_crud/user_crud_add.html', status_list=status_list)
 

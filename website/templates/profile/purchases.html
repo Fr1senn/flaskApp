@@ -7,9 +7,10 @@
         <tr>
             <th>Инициалы</th>
             <th>Цена</th>
-            <th>Дата покупки</th>
             <th>Абонемент</th>
             <th>Срок действия</th>
+            <th>Дата покупки</th>
+            <th>Конец действия абонемента</th>
         </tr>
         </thead>
         <tbody>
@@ -17,9 +18,11 @@
             <tr>
                 <th>{{ item[0] }} {{ item[1] }}</th>
                 <th>{{ item[2] }} грн.</th>
-                <th>{{ item[3].strftime('%Y-%m-%d') }}</th>
+                <th>{{ item[3] }}</th>
                 <th>{{ item[4] }}</th>
-                <th>{{ item[5] }}</th>
+                <th>{{ item[5].strftime('%Y-%m-%d') }}</th>
+                <th>{{ item[6] }}</th>
+
             </tr>
         {% endfor %}
         </tbody>

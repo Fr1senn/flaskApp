@@ -42,7 +42,7 @@ def users():
     if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
         return redirect(url_for('main.home'))
     user_list = connect_and_select(f'''
-        SELECT public.user.id, first_name, last_name, username, birthday, registration_date, title
+        SELECT public.user.id, first_name, last_name, email, birthday, registration_date, title
         FROM public.user
         JOIN status ON status.id = status_id
         WHERE public.user.id != 0
