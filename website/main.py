@@ -84,8 +84,7 @@ def login():
             SELECT public.user.id, title
             FROM public.user
             JOIN status ON status.id = status_id
-            WHERE username = '{username}';
-        ''')
+            WHERE username = '{username}';''')
         username_list = [item[0] for item in connect_and_select('''SELECT username FROM public.user''')]
         if user is None:
             flash('Пользователь не сущесвует!', category='error')
@@ -115,7 +114,7 @@ def logout():
     return redirect(url_for('main.login'))
 
 
-psw_list = ['russel', 'toto', 'zhukov', 'barshova']
+psw_list = ['russel', 'toto', 'zhukov', 'barshova', 'baran', 'romanova']
 
 
 @main.route('/registration', methods=['GET', 'POST'])
@@ -152,8 +151,7 @@ def registration():
             connect_and_iud(f'''CREATE ROLE {username} WITH LOGIN PASSWORD '{password}';''')
             connect_and_iud(f'''
                 INSERT INTO public.user(first_name, last_name, username, birthday, email)
-                VALUES('{first_name}', '{last_name}', '{username}', '{birthday}', '{request.form['email']}');
-            ''')
+                VALUES('{first_name}', '{last_name}', '{username}', '{birthday}', '{request.form['email']}');''')
             connect_and_iud(f'''GRANT authenticated_user TO {username}''')
             psw_list.append(password)
             return redirect(url_for('main.login'))
