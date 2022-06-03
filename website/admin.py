@@ -67,12 +67,12 @@ def user_progress():
     if session['status'] not in ['Тренер', 'Администратор', 'Управляющий']:
         return redirect(url_for('main.home'))
     user_progress_list = connect_and_select('''
-        SELECT DISTINCT public.user.id, first_name, last_name, unit,
-        LAST_VALUE(value) OVER(PARTITION BY unit, public.user.id)
+        SELECT public.user.id, first_name, last_name
         FROM public.user
         JOIN user_progress ON user_id = public.user.id
         JOIN unit ON unit.id = unit_id
         WHERE public.user.id != 0
+        GROUP BY public.user.id, first_name, last_name
         ORDER BY public.user.id;
     ''', user=session['username'], password=session['password'])
     return render_template('admin/user_progress.html', user_progress=user_progress_list)

@@ -13,7 +13,7 @@
                 <label style="text-align:center; display: block" for="status">Выберите статус</label>
                 <select name="status">
                     {% for item in status %}
-                        {% if user[0][8] == item[0] %}
+                        {% if user[0][9] == item[0] %}
                             <option selected>{{ item[0] }}</option>
                         {% else %}
                             <option>{{ item[0] }}</option>

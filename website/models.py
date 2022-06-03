@@ -88,28 +88,16 @@ class Schedule(db.Model):
         return f'{self.date} {self.duration}'
 
 
-class Attendance(db.Model):
-    __tablename__ = 'attendance'
+class AttendanceStatus(db.Model):
+    __tablename__ = 'attendance_status'
 
     id = db.Column(db.Integer, primary_key=True)
     attendance = db.Column(db.DateTime, nullable=False)
 
-    user_training_schedule = db.relationship('UserTrainingScheduleAttendance', backref='attendance')
+    user_training_schedule = db.relationship('UserTrainingScheduleAttendance', backref='attendance_status')
 
     def __repr__(self):
         return f'{self.attendance}'
-
-
-class Equipment(db.Model):
-    __tablename__ = 'equipment'
-
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(50), nullable=False, unique=True)
-
-    training_schedule_equipment = db.relationship('TrainingScheduleEquipment', backref='equipment')
-
-    def __repr__(self):
-        return f'{self.title}'
 
 
 class TrainingSchedule(db.Model):
@@ -119,7 +107,7 @@ class TrainingSchedule(db.Model):
     date = db.Column(db.Date, nullable=False)
     duration = db.Column(db.Interval, nullable=False)
 
-    training_schedule_equipment = db.relationship('TrainingScheduleEquipment', backref='training_schedule')
+    training_schedule = db.relationship('UserTrainingScheduleAttendance', backref='training_schedule')
 
     def __repr__(self):
         return f'{self.date} {self.duration}'
@@ -188,25 +176,10 @@ class UserSubscriptionDuration(db.Model):
         return f'{self.user_id} {self.value} {self.date}'
 
 
-class TrainingScheduleEquipment(db.Model):
-    __tablename__ = 'training_schedule_equipment'
-
-    id = db.Column(db.Integer, primary_key=True)
-    equipment_id = db.Column(db.Integer, db.ForeignKey('equipment.id'), nullable=False)
-    training_schedule_id = db.Column(db.Integer, db.ForeignKey('training_schedule.id'), nullable=False)
-
-    user_training_schedule_attendance = db.relationship('UserTrainingScheduleAttendance',
-                                                        backref='training_schedule_equipment')
-
-    def __repr__(self):
-        return f'{self.equipment_id} {self.training_schedule_id}'
-
-
 class UserTrainingScheduleAttendance(db.Model):
     __tablename__ = 'user_training_schedule_attendance'
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    attendance_id = db.Column(db.Integer, db.ForeignKey('attendance.id'), nullable=False)
-    training_schedule_equipment_id = db.Column(db.Integer, db.ForeignKey('training_schedule_equipment.id'),
-                                               nullable=False)
+    status_id = db.Column(db.Integer, db.ForeignKey('attendance_status.id'), nullable=False)
+    training_schedule_id = db.Column(db.Integer, db.ForeignKey('training_schedule.id'))

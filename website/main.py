@@ -129,16 +129,16 @@ def registration():
         password = request.form.get('password')
         password_confirm = request.form.get('password_confirm')
 
-        if len(first_name) == 0:
-            flash('Введите имя!', category='error')
+        usrnm_list = [item[0] for item in connect_and_select('''SELECT username FROM public.user''')]
+        email_list = [item[0] for item in connect_and_select('''SELECT email FROM public.user''')]
+
+        if len(first_name) < 3 or not first_name.isalpha():
+            flash('Некорректное имя!', category='error')
             return redirect(url_for('main.registration'))
-        elif len(last_name) == 0:
+        elif len(last_name) < 3 or not last_name.isalpha():
             flash('Введите фамилию!', category='error')
             return redirect(url_for('main.registration'))
-        elif len(birthday) == 0:
-            flash('Введите дату рождения!', category='error')
-            return redirect(url_for('main.registration'))
-        elif birthday > datetime.now().strftime('%Y-%m-%d'):
+        elif len(birthday) == 0 or birthday > datetime.now().strftime('%Y-%m-%d'):
             flash('Некорректная дата рождения!', category='error')
             return redirect(url_for('main.registration'))
         elif password != password_confirm:
@@ -146,6 +146,12 @@ def registration():
             return redirect(url_for('main.registration'))
         elif '@' not in request.form['email'] or '.' not in request.form['email']:
             flash('Некорректный email!', category='error')
+            return redirect(url_for('main.registration'))
+        elif request.form['email'] in email_list:
+            flash('Email уже существует!', category='error')
+            return redirect(url_for('main.registration'))
+        elif username in usrnm_list:
+            flash('Имя пользователя уже существует!', category='error')
             return redirect(url_for('main.registration'))
         else:
             connect_and_iud(f'''CREATE ROLE {username} WITH LOGIN PASSWORD '{password}';''')
